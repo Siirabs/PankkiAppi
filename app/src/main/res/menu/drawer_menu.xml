@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_accounts"
+            android:icon="@drawable/ic_accounts"
+            android:title="Accounts" />
+
+    </group>
+
+
+    <item android:title="Transaction">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_deposit"
+                    android:icon="@drawable/ic_deposit"
+                    android:title="Make a Deposit" />
+                <item
+                    android:id="@+id/nav_transfer"
+                    android:icon="@drawable/ic_transfer"
+                    android:title="Make a Transfer" />
+                <item
+                    android:id="@+id/nav_payment"
+                    android:icon="@drawable/ic_payment"
+                    android:title="Make a Payment" />
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="Profile">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings"
+                android:title="Settings" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_logout"
+                android:title="Logout" />
+        </menu>
+    </item>
+</menu>
