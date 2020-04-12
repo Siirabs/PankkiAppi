@@ -11,6 +11,7 @@ import androidx.core.widget.NestedScrollView;
 
 import android.view.View;
 
+import com.example.pankkiappi.DrawerActivity;
 import com.example.pankkiappi.R;
 import com.example.pankkiappi.helpers.InputValidation;
 import com.example.pankkiappi.sql.DatabaseHelper;
@@ -121,9 +122,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
             Intent accountsIntent = new Intent(activity, UsersListActivity.class);
+            Intent drawerIntent = new Intent(activity, DrawerActivity.class);
             accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
             emptyInputEditText();
-            startActivity(accountsIntent);
+            startActivity(drawerIntent);
 
 
         } else {
