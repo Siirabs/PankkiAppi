@@ -23,6 +23,15 @@
         <activity
             android:name=".activities.UsersListActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".DrawerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
