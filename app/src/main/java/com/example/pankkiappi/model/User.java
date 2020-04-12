@@ -1,19 +1,14 @@
-package com.example.pankkiappi;
+package com.example.pankkiappi.model;
 
-
-
-import androidx.fragment.app.Fragment;
-
-public class LoginFragment extends Fragment {
-
+public class User {
     private int id;
     private String name;
     private String email;
     private String password;
 
-    //public int getId() {
-        //return id;
-   // }
+    public int getId() {
+        return id;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -28,6 +23,7 @@ public class LoginFragment extends Fragment {
     }
 
     public String getEmail() {
+
         return email;
     }
 
@@ -43,3 +39,4 @@ public class LoginFragment extends Fragment {
         this.password = password;
     }
 }
+
