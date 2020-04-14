@@ -49,7 +49,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private InputValidation inputValidation;
     private DatabaseHelper databaseHelper;
 
-    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +60,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initListeners();
         initObjects();
     }
+    User u = User.getInstance();
+
 
     /**
      * This method is to initialize views
@@ -95,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void initObjects() {
         databaseHelper = new DatabaseHelper(activity);
         inputValidation = new InputValidation(activity);
-        user = new User();
+
 
     }
 
@@ -135,7 +136,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         String generatedPassword = null;
-        byte[] generatedSalt = user.getSalt();
+        byte[] generatedSalt = u.getSalt();
         System.out.println(generatedSalt);
         String passwordToHash = textInputEditTextPassword.getText().toString().trim()+generatedSalt.toString();
         System.out.println(textInputEditTextPassword.getText().toString().trim()+generatedSalt);

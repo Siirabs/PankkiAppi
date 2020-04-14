@@ -6,7 +6,10 @@ public class User {
     private String email;
     private String password;
     private byte[] salt;
-
+    private static User u = new User();
+    public static User getInstance(){
+        return u;
+    }
 
     public int getId() {
         return id;

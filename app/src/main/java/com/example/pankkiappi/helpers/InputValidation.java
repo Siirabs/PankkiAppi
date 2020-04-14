@@ -10,7 +10,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.regex.MatchResult;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
