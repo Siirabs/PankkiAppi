@@ -14,12 +14,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
-
+import com.example.pankkiappi.activities.RegisterActivity;
+import com.example.pankkiappi.activities.LoginActivity;
+import com.example.pankkiappi.activities.UsersListActivity;
 import com.google.android.material.navigation.NavigationView;
 
 public class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

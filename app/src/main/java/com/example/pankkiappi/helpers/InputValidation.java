@@ -10,6 +10,10 @@ import android.view.inputmethod.InputMethodManager;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class InputValidation {
     private Context context;
 
@@ -42,7 +46,24 @@ public class InputValidation {
 
         return true;
     }
+    public boolean isValidPassword(TextInputEditText textInputEditText, TextInputLayout textInputLayout, String message)  {
 
+        Pattern pattern;
+        Matcher matcher;
+        String value = textInputEditText.getText().toString().trim();
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$";
+
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(value);
+        if (matcher.matches()) {
+            textInputLayout.setErrorEnabled(false);
+        } else {
+            textInputLayout.setError(message);
+            hideKeyboardFrom(textInputEditText);
+            return false;
+        }
+        return true;
+    }
 
     /**
      * method to check InputEditText has valid email .

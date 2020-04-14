@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.widget.NestedScrollView;
 
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.pankkiappi.DrawerActivity;
 import com.example.pankkiappi.R;
@@ -130,7 +131,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         } else {
             // Snack Bar to show success message that record is wrong
-            Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show();
+            //Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show();
+            Toast toast = Toast.makeText(this, "Wrong Email or Password", Toast.LENGTH_LONG);
+            toast.show();
         }
     }
 

@@ -11,6 +11,7 @@
     <string name="error_message_email">Enter Valid Email</string>
     <string name="error_message_age">Enter Age</string>
     <string name="error_message_password">Enter Password</string>
+    <string name="error_message_invalid_password">The password must be at least 12 characters long and include a number, lowercase letter, uppercase letter and special character</string>
     <string name="success_message">Registration Successful</string>
     <string name="text_not_member">No account yet? Create one</string>
     <string name="text_already_member">Already a member? Login</string>

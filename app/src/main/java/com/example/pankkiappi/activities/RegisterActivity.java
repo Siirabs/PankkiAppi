@@ -1,5 +1,6 @@
 package com.example.pankkiappi.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 
@@ -10,6 +11,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.widget.NestedScrollView;
 
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.pankkiappi.R;
 import com.example.pankkiappi.helpers.InputValidation;
@@ -131,6 +133,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (!inputValidation.isInputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_password))) {
             return;
         }
+
+        if (!inputValidation.isValidPassword(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_invalid_password))) {
+            return;
+        }
+
         if (!inputValidation.isInputEditTextMatches(textInputEditTextPassword, textInputEditTextConfirmPassword,
                 textInputLayoutConfirmPassword, getString(R.string.error_password_match))) {
             return;
@@ -145,13 +152,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             databaseHelper.addUser(user);
 
             // Snack Bar to show success message that record saved successfully
-            Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG).show();
+            //Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG).show();
+            Toast toast = Toast.makeText(this, "Registratrion succesful", Toast.LENGTH_LONG);
+            toast.show();
+            Intent loginactivity = new Intent(activity, LoginActivity.class);
+            startActivity(loginactivity);
             emptyInputEditText();
 
 
         } else {
             // Snack Bar to show error message that record already exists
-            Snackbar.make(nestedScrollView, getString(R.string.error_email_exists), Snackbar.LENGTH_LONG).show();
+            //Snackbar.make(nestedScrollView, getString(R.string.error_email_exists), Snackbar.LENGTH_LONG).show();
+            Toast toast = Toast.makeText(this, "Email Already Exists", Toast.LENGTH_LONG);
+            toast.show();
         }
 
 
@@ -167,3 +180,4 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         textInputEditTextConfirmPassword.setText(null);
     }
 }
+
