@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.pankkiappi.DrawerActivity;
 import com.example.pankkiappi.R;
 import com.example.pankkiappi.helpers.InputValidation;
+import com.example.pankkiappi.model.User;
 import com.example.pankkiappi.sql.DatabaseHelper;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -25,6 +26,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Random;
 import java.util.regex.Matcher;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private final AppCompatActivity activity = LoginActivity.this;
@@ -40,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private AppCompatButton appCompatButtonLogin;
 
     private AppCompatTextView textViewLinkRegister;
+
     private InputValidation inputValidation;
     private DatabaseHelper databaseHelper;
 
@@ -111,16 +117,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
-
-    //@Override
-   // public void applyText(String verCode) {
-
-
-
-        //textViewVerCode.setText(verCode);
-    //}
-
     /**
      * This method is to validate the input text fields and verify login credentials from SQLite
      */
@@ -134,6 +130,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (!inputValidation.isInputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_email))) {
             return;
         }
+
+        String generatedPassword = null;
+        byte[] generatedSalt = user.getSalt();
+        System.out.println(generatedSalt);
+        String passwordToHash = textInputEditTextPassword.getText().toString().trim()+generatedSalt.toString();
+        System.out.println(textInputEditTextPassword.getText().toString().trim()+generatedSalt);
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            md.update(generatedSalt);
+            byte[] hashedPassword = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder();
+            for(int i=0; i< hashedPassword.length ;i++){
+                sb.append(Integer.toString((hashedPassword[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            generatedPassword = sb.toString();
+            String password = generatedPassword;
+            System.out.println(password);
+        } catch(NoSuchAlgorithmException x) {
+            // do proper exception handling
+        }
+
 
         if (databaseHelper.checkUser(textInputEditTextEmail.getText().toString().trim()
                 , textInputEditTextPassword.getText().toString().trim())) {

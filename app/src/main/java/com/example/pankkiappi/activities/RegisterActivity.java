@@ -21,6 +21,11 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final AppCompatActivity activity = RegisterActivity.this;
@@ -147,7 +152,32 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             user.setName(textInputEditTextName.getText().toString().trim());
             user.setEmail(textInputEditTextEmail.getText().toString().trim());
-            user.setPassword(textInputEditTextPassword.getText().toString().trim());
+
+            SecureRandom random = new SecureRandom();
+            String generatedPassword = null;
+            String generatedSalt = null;
+            byte[] salt = new byte[16];
+            random.nextBytes(salt);
+            String passwordToHash = textInputEditTextPassword.getText().toString().trim()+salt.toString();
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA-512");
+                md.update(salt);
+                byte[] hashedPassword = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
+                StringBuilder sb = new StringBuilder();
+                for(int i=0; i< hashedPassword.length ;i++){
+                    sb.append(Integer.toString((hashedPassword[i] & 0xff) + 0x100, 16).substring(1));
+                }
+                generatedPassword = sb.toString();
+                user.setSalt(salt);
+                user.setPassword(generatedPassword);
+                System.out.println(user.getSalt());
+                System.out.println(user.getSalt().toString());
+                System.out.println(user.getPassword());
+            } catch(NoSuchAlgorithmException x) {
+                // do proper exception handling
+            }
+
+
 
             databaseHelper.addUser(user);
 
