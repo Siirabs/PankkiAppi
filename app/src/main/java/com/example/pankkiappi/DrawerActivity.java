@@ -2,6 +2,7 @@ package com.example.pankkiappi;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -63,9 +64,10 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new PaymentFragment()).commit();
                 break;
-            //case R.id.nav_send:
-            //Toast.makeText(this, "Send", Toast.LENGTH_SHORT).show();
-            // break;
+            case R.id.nav_logout:
+                Intent logIntent = new Intent(this, LoginActivity.class);
+                startActivity(logIntent);
+                break;
 
         }
 

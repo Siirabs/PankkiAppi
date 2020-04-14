@@ -19,10 +19,14 @@
         <activity
             android:name=".activities.RegisterActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".activities.digitCode"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".DrawerActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
         <activity
             android:name=".activities.UsersListActivity"
             android:screenOrientation="portrait" />

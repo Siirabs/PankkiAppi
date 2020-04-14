@@ -46,6 +46,14 @@ public class InputValidation {
 
         return true;
     }
+
+    /**
+     * method to check password pattern.
+     * @param textInputEditText
+     * @param textInputLayout
+     * @param message
+     * @return
+     */
     public boolean isValidPassword(TextInputEditText textInputEditText, TextInputLayout textInputLayout, String message)  {
 
         Pattern pattern;

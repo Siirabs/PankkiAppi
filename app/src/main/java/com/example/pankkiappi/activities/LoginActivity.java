@@ -10,6 +10,8 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.widget.NestedScrollView;
 
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pankkiappi.DrawerActivity;
@@ -19,6 +21,10 @@ import com.example.pankkiappi.sql.DatabaseHelper;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.Random;
+import java.util.regex.Matcher;
+
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private final AppCompatActivity activity = LoginActivity.this;
@@ -34,7 +40,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private AppCompatButton appCompatButtonLogin;
 
     private AppCompatTextView textViewLinkRegister;
-
     private InputValidation inputValidation;
     private DatabaseHelper databaseHelper;
 
@@ -95,6 +100,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.appCompatButtonLogin:
                 verifyFromSQLite();
+
+
                 break;
             case R.id.textViewLinkRegister:
                 // Navigate to RegisterActivity
@@ -103,6 +110,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
+
+
+
+    //@Override
+   // public void applyText(String verCode) {
+
+
+
+        //textViewVerCode.setText(verCode);
+    //}
 
     /**
      * This method is to validate the input text fields and verify login credentials from SQLite
@@ -120,13 +137,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (databaseHelper.checkUser(textInputEditTextEmail.getText().toString().trim()
                 , textInputEditTextPassword.getText().toString().trim())) {
-
-
-            Intent accountsIntent = new Intent(activity, UsersListActivity.class);
-            Intent drawerIntent = new Intent(activity, DrawerActivity.class);
-            accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
             emptyInputEditText();
-            startActivity(drawerIntent);
+            Intent digitCode = new Intent(activity, digitCode.class);
+            startActivity(digitCode);
+            //Intent accountsIntent = new Intent(activity, UsersListActivity.class);
+            //Intent drawerIntent = new Intent(activity, DrawerActivity.class);
+           // accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
+
+            //startActivity(drawerIntent);
 
 
         } else {
