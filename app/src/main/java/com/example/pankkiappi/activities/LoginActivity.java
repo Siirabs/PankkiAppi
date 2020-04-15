@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initListeners();
         initObjects();
     }
-
+    User u = User.getInstance();
 
     /**
      * This method is to initialize views
@@ -97,7 +97,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void initObjects() {
         databaseHelper = new DatabaseHelper(activity);
         inputValidation = new InputValidation(activity);
-        user = new User();
 
     }
 
