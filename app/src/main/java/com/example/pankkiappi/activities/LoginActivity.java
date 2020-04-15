@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             System.out.println(user.getName());
             System.out.println(generatedSalt);
             System.out.println(user.getEmail());*/
-            if (databaseHelper.checkUser(textInputEditTextPassword.getText().toString().trim()+user.getSalt().toString())) {
+            //if (databaseHelper.checkUser(textInputEditTextPassword.getText().toString().trim()+user.getSalt().toString())) {
                 String generatedPassword = null;
                 String passwordToHash = textInputEditTextPassword.getText().toString().trim()+user.getSalt().toString();
                 System.out.println(textInputEditTextPassword.getText().toString().trim()+user.getSalt());
@@ -180,7 +180,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Toast toast = Toast.makeText(this, "Wrong Email or Password", Toast.LENGTH_LONG);
                 toast.show();
             }
-        }
     }
 
     /**
