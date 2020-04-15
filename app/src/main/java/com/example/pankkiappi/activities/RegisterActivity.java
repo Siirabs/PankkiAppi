@@ -47,6 +47,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private InputValidation inputValidation;
     private DatabaseHelper databaseHelper;
+    private User user;
 
     private static RegisterActivity r = new RegisterActivity();
     public static RegisterActivity getInstance(){
@@ -63,7 +64,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         initListeners();
         initObjects();
     }
-    User user = User.getInstance();
     /**
      * This method is to initialize views
      */
@@ -101,6 +101,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void initObjects() {
         inputValidation = new InputValidation(activity);
         databaseHelper = new DatabaseHelper(activity);
+        user = new User();
 
     }
 
@@ -157,7 +158,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             SecureRandom random = new SecureRandom();
             String generatedPassword = null;
-            String generatedSalt = null;
             byte[] salt = new byte[16];
             random.nextBytes(salt);
             String passwordToHash = textInputEditTextPassword.getText().toString().trim()+salt.toString();
@@ -172,17 +172,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 generatedPassword = sb.toString();
                 user.setSalt(salt);
                 user.setPassword(generatedPassword);
-                System.out.println(user.getSalt());
-                System.out.println(user.getSalt().toString());
-                System.out.println(user.getPassword());
+                //System.out.println(user.getSalt());
+                //System.out.println(user.getSalt().toString());
+                //System.out.println(user.getPassword());
+                databaseHelper.addUser(user);
             } catch(NoSuchAlgorithmException x) {
                 // do proper exception handling
             }
-
-
-
-            databaseHelper.addUser(user);
-
             // Snack Bar to show success message that record saved successfully
             //Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG).show();
             Toast toast = Toast.makeText(this, "Registration succesful", Toast.LENGTH_LONG);

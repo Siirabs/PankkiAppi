@@ -229,12 +229,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return true/false
      */
     public boolean checkUser(String email, String password) {
-
-        String generatedPassword = null;
-        String passwordToHash = password+user.getSalt().toString();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String salt = null;
+        String generatedPassword;
+        String passwordToHash = password+salt;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
-            md.update(user.getSalt());
+            Cursor cursor = db.query(TABLE_USER, COLUMN_USER_SALT.split(""), COLUMN_USER_EMAIL, email.split(""), null, null, null);
+            md.update(cursor.getBlob(0));
             byte[] hashedPassword = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
             StringBuilder sb = new StringBuilder();
             for(int i=0; i< hashedPassword.length ;i++){
@@ -246,13 +248,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } catch(NoSuchAlgorithmException x) {
             // do proper exception handling
         }
-
-
         // array of columns to fetch
         String[] columns = {
                 COLUMN_USER_ID
         };
-        SQLiteDatabase db = this.getReadableDatabase();
+
         // selection criteria
         String selection = COLUMN_USER_EMAIL + " = ?" + " AND " + COLUMN_USER_PASSWORD + " = ?";
 
@@ -263,7 +263,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         /**
          * Here query function is used to fetch records from user table this function works like we use sql query.
          * SQL query equivalent to this query function is
-         * SELECT user_id FROM user WHERE user_email = 'jack@androidtutorialshub.com' AND user_password = 'qwerty';
+         * SELECT user_id, user_salt FROM user WHERE user_email = 'jack@androidtutorialshub.com' AND user_password = 'qwerty';
          */
         Cursor cursor = db.query(TABLE_USER, //Table to query
                 columns,                    //columns to return
@@ -274,7 +274,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null);                      //The sort order
 
         int cursorCount = cursor.getCount();
-
         cursor.close();
         db.close();
         if (cursorCount > 0) {
