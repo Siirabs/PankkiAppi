@@ -50,7 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    User user = User.getInstance();
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
