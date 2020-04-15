@@ -21,8 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
-            android:src="@drawable/logo" />
+            android:layout_marginTop="20dp"
+            android:src="@drawable/pepecoin" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
