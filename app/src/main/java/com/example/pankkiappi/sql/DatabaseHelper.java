@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +49,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
+    User user = User.getInstance();
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -224,6 +229,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return true/false
      */
     public boolean checkUser(String email, String password) {
+
+        String generatedPassword = null;
+        String passwordToHash = password+user.getSalt().toString();
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            md.update(user.getSalt());
+            byte[] hashedPassword = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder();
+            for(int i=0; i< hashedPassword.length ;i++){
+                sb.append(Integer.toString((hashedPassword[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            generatedPassword = sb.toString();
+            password = generatedPassword;
+            System.out.println("Passu on "+password);
+        } catch(NoSuchAlgorithmException x) {
+            // do proper exception handling
+        }
+
 
         // array of columns to fetch
         String[] columns = {

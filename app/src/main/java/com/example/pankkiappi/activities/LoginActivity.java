@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initListeners();
         initObjects();
     }
-
+    User user = User.getInstance();
 
     /**
      * This method is to initialize views
@@ -138,31 +138,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         if (databaseHelper.checkUser(textInputEditTextEmail.getText().toString().trim()
-                , textInputEditTextPassword.getText().toString().trim()+user.getSalt().toString())) {
-            /*byte[] generatedSalt = user.getSalt();
-            System.out.println(user.getName());
-            System.out.println(generatedSalt);
-            System.out.println(user.getEmail());*/
-            //if (databaseHelper.checkUser(textInputEditTextPassword.getText().toString().trim()+user.getSalt().toString())) {
-                String generatedPassword = null;
-                String passwordToHash = textInputEditTextPassword.getText().toString().trim()+user.getSalt().toString();
-                System.out.println(textInputEditTextPassword.getText().toString().trim()+user.getSalt());
-                try {
-                    MessageDigest md = MessageDigest.getInstance("SHA-512");
-                    md.update(user.getSalt());
-                    byte[] hashedPassword = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
-                    StringBuilder sb = new StringBuilder();
-                    for(int i=0; i< hashedPassword.length ;i++){
-                        sb.append(Integer.toString((hashedPassword[i] & 0xff) + 0x100, 16).substring(1));
-                    }
-                    generatedPassword = sb.toString();
-                    String password = generatedPassword;
-                    System.out.println(password);
-                } catch(NoSuchAlgorithmException x) {
-                    // do proper exception handling
-                }
-
-
+                , textInputEditTextPassword.getText().toString().trim())) {
                 emptyInputEditText();
                 Intent digitCode = new Intent(activity, digitCode.class);
                 startActivity(digitCode);

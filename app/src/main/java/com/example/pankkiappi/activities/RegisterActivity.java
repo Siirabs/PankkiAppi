@@ -47,7 +47,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private InputValidation inputValidation;
     private DatabaseHelper databaseHelper;
-    private User user;
 
     private static RegisterActivity r = new RegisterActivity();
     public static RegisterActivity getInstance(){
@@ -64,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         initListeners();
         initObjects();
     }
-
+    User user = User.getInstance();
     /**
      * This method is to initialize views
      */
@@ -102,7 +101,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void initObjects() {
         inputValidation = new InputValidation(activity);
         databaseHelper = new DatabaseHelper(activity);
-        user = new User();
 
     }
 
