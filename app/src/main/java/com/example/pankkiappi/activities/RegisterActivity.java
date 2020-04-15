@@ -185,7 +185,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             // Snack Bar to show success message that record saved successfully
             //Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG).show();
-            Toast toast = Toast.makeText(this, "Registratrion succesful", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(this, "Registration succesful", Toast.LENGTH_LONG);
             toast.show();
             Intent loginactivity = new Intent(activity, LoginActivity.class);
             startActivity(loginactivity);
