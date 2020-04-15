@@ -49,6 +49,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private InputValidation inputValidation;
     private DatabaseHelper databaseHelper;
 
+    private User user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initListeners();
         initObjects();
     }
-    User u = User.getInstance();
 
 
     /**
@@ -96,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void initObjects() {
         databaseHelper = new DatabaseHelper(activity);
         inputValidation = new InputValidation(activity);
-
+        user = new User();
 
     }
 
@@ -136,44 +137,49 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        String generatedPassword = null;
-        byte[] generatedSalt = u.getSalt();
-        System.out.println(generatedSalt);
-        String passwordToHash = textInputEditTextPassword.getText().toString().trim()+generatedSalt.toString();
-        System.out.println(textInputEditTextPassword.getText().toString().trim()+generatedSalt);
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-            md.update(generatedSalt);
-            byte[] hashedPassword = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
-            StringBuilder sb = new StringBuilder();
-            for(int i=0; i< hashedPassword.length ;i++){
-                sb.append(Integer.toString((hashedPassword[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            generatedPassword = sb.toString();
-            String password = generatedPassword;
-            System.out.println(password);
-        } catch(NoSuchAlgorithmException x) {
-            // do proper exception handling
-        }
-
 
         if (databaseHelper.checkUser(textInputEditTextEmail.getText().toString().trim()
-                , textInputEditTextPassword.getText().toString().trim())) {
-            emptyInputEditText();
-            Intent digitCode = new Intent(activity, digitCode.class);
-            startActivity(digitCode);
-            //Intent accountsIntent = new Intent(activity, UsersListActivity.class);
-            //Intent drawerIntent = new Intent(activity, DrawerActivity.class);
-           // accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
+                , textInputEditTextPassword.getText().toString().trim()+user.getSalt().toString())) {
+            /*byte[] generatedSalt = user.getSalt();
+            System.out.println(user.getName());
+            System.out.println(generatedSalt);
+            System.out.println(user.getEmail());*/
+            if (databaseHelper.checkUser(textInputEditTextPassword.getText().toString().trim()+user.getSalt().toString())) {
+                String generatedPassword = null;
+                String passwordToHash = textInputEditTextPassword.getText().toString().trim()+user.getSalt().toString();
+                System.out.println(textInputEditTextPassword.getText().toString().trim()+user.getSalt());
+                try {
+                    MessageDigest md = MessageDigest.getInstance("SHA-512");
+                    md.update(user.getSalt());
+                    byte[] hashedPassword = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
+                    StringBuilder sb = new StringBuilder();
+                    for(int i=0; i< hashedPassword.length ;i++){
+                        sb.append(Integer.toString((hashedPassword[i] & 0xff) + 0x100, 16).substring(1));
+                    }
+                    generatedPassword = sb.toString();
+                    String password = generatedPassword;
+                    System.out.println(password);
+                } catch(NoSuchAlgorithmException x) {
+                    // do proper exception handling
+                }
 
-            //startActivity(drawerIntent);
+
+                emptyInputEditText();
+                Intent digitCode = new Intent(activity, digitCode.class);
+                startActivity(digitCode);
+                //Intent accountsIntent = new Intent(activity, UsersListActivity.class);
+                //Intent drawerIntent = new Intent(activity, DrawerActivity.class);
+                // accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
+
+                //startActivity(drawerIntent);
 
 
-        } else {
-            // Snack Bar to show success message that record is wrong
-            //Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show();
-            Toast toast = Toast.makeText(this, "Wrong Email or Password", Toast.LENGTH_LONG);
-            toast.show();
+            } else {
+                // Snack Bar to show success message that record is wrong
+                //Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show();
+                Toast toast = Toast.makeText(this, "Wrong Email or Password", Toast.LENGTH_LONG);
+                toast.show();
+            }
         }
     }
 
