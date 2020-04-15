@@ -7,6 +7,11 @@ public class User {
     private String password;
     private byte[] salt;
 
+    private static User user = new User();
+
+    public static User getInstance() {
+        return user;
+    }
     public int getId() {
         return id;
     }

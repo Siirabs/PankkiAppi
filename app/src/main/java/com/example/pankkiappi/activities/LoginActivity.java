@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initListeners();
         initObjects();
     }
-    User user = User.getInstance();
+
 
     /**
      * This method is to initialize views
