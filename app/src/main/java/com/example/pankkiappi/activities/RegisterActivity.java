@@ -156,28 +156,30 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             user.setName(textInputEditTextName.getText().toString().trim());
             user.setEmail(textInputEditTextEmail.getText().toString().trim());
 
+            //SecureRandom saltin generoimiseen
             SecureRandom random = new SecureRandom();
+            byte[] bytes = new byte[8];
+            random.nextBytes(bytes);
+
+            String saltString = new String(bytes, StandardCharsets.ISO_8859_1);
+
             String generatedPassword = null;
-            byte[] salt = new byte[16];
-            random.nextBytes(salt);
-            String passwordToHash = textInputEditTextPassword.getText().toString().trim()+salt.toString();
+            String passwordToHash = textInputEditTextPassword.getText().toString().trim()+saltString;
+
             try {
                 MessageDigest md = MessageDigest.getInstance("SHA-512");
-                md.update(salt);
-                byte[] hashedPassword = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
+                md.update(bytes);
+                byte[] hashedPassword = md.digest(passwordToHash.getBytes(StandardCharsets.ISO_8859_1)); //Käytetään iso-8859-1 enkoodausta jotta byte[] -> string ja takaisin string -> byte[] muunnos ei mene vituiks
                 StringBuilder sb = new StringBuilder();
                 for(int i=0; i< hashedPassword.length ;i++){
                     sb.append(Integer.toString((hashedPassword[i] & 0xff) + 0x100, 16).substring(1));
                 }
                 generatedPassword = sb.toString();
-                user.setSalt(salt.toString());
+                user.setSalt(saltString);
                 user.setPassword(generatedPassword);
-                //System.out.println(user.getSalt());
-                //System.out.println(user.getSalt().toString());
-                //System.out.println(user.getPassword());
                 databaseHelper.addUser(user);
             } catch(NoSuchAlgorithmException x) {
-                // do proper exception handling
+                x.printStackTrace();
             }
             // Snack Bar to show success message that record saved successfully
             //Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG).show();

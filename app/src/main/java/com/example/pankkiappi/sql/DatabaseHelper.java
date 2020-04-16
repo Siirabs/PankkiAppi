@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -233,30 +234,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //String selectQuery = "SELECT " + COLUMN_USER_SALT + " FROM " + TABLE_USER + " WHERE " + COLUMN_USER_EMAIL + " = "+email;
         Cursor cursor1 = db.rawQuery("SELECT user_salt FROM user WHERE user_email = ?", new String[] {email});
-        if(cursor1.getCount() >= 1) {
-            while (cursor1.moveToNext()) {
-                byte[] bytes = (cursor1.getString(0).getBytes());
-                System.out.println("Printti"+cursor1.getString(0).getBytes());
-                String passwordToHash = password + bytes.toString();
-                System.out.println(passwordToHash);
-                try {
-                    MessageDigest md = MessageDigest.getInstance("SHA-512");
-                    md.update(bytes);
-                    System.out.println("Salt on " + cursor1.getBlob(0).toString());
-                    byte[] hashedPassword = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < hashedPassword.length; i++) {
-                        sb.append(Integer.toString((hashedPassword[i] & 0xff) + 0x100, 16).substring(1));
-                    }
-                    generatedPassword = sb.toString();
-                    password = generatedPassword;
-                    System.out.println("Passu on " + password);
-                } catch (NoSuchAlgorithmException x) {
-                    // do proper exception handling
+        //Liikutetaan cursoria ettei kaadu jos yrittää olemattomalla tunnuksella kirjautua
+        if( cursor1 != null && cursor1.moveToFirst() ){
+            String salt = cursor1.getString(0);
+            byte[] bytes = salt.getBytes(StandardCharsets.ISO_8859_1);
+            String saltString = new String(bytes, StandardCharsets.ISO_8859_1);
+            String passwordToHash = password + saltString;
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA-512");
+                md.update(saltString.getBytes(StandardCharsets.ISO_8859_1));
+                byte[] hashedPassword = md.digest(passwordToHash.getBytes(StandardCharsets.ISO_8859_1));
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashedPassword.length; i++) {
+                    sb.append(Integer.toString((hashedPassword[i] & 0xff) + 0x100, 16).substring(1));
                 }
+                generatedPassword = sb.toString();
+                password = generatedPassword;
+            } catch (NoSuchAlgorithmException x) {
+                // do proper exception handling
             }
         }
-
 
         // array of columns to fetch
         String[] columns = {
