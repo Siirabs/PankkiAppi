@@ -5,13 +5,8 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private byte[] salt;
+    private String salt;
 
-    private static User user = new User();
-
-    public static User getInstance() {
-        return user;
-    }
     public int getId() {
         return id;
     }
@@ -42,9 +37,9 @@ public class User {
         this.password = password;
     }
 
-    public byte[] getSalt() { return salt; }
+    public String getSalt() { return salt; }
 
-    public void setSalt(byte[] salt) {
+    public void setSalt(String salt) {
         this.salt = salt;
     }
 }

@@ -47,6 +47,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private InputValidation inputValidation;
     private DatabaseHelper databaseHelper;
+    private User user;
 
     private static RegisterActivity r = new RegisterActivity();
     public static RegisterActivity getInstance(){
@@ -63,7 +64,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         initListeners();
         initObjects();
     }
-    User user = User.getInstance();
     /**
      * This method is to initialize views
      */
@@ -101,6 +101,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void initObjects() {
         inputValidation = new InputValidation(activity);
         databaseHelper = new DatabaseHelper(activity);
+        user = new User();
 
     }
 
@@ -170,7 +171,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     sb.append(Integer.toString((hashedPassword[i] & 0xff) + 0x100, 16).substring(1));
                 }
                 generatedPassword = sb.toString();
-                user.setSalt(salt);
+                user.setSalt(salt.toString());
                 user.setPassword(generatedPassword);
                 System.out.println(user.getSalt());
                 System.out.println(user.getSalt().toString());

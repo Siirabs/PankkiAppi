@@ -36,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // create table sql query
     private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_NAME + " TEXT,"
-            + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT," + COLUMN_USER_SALT + " BLOB" + ")";
+            + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT," + COLUMN_USER_SALT + " TEXT" + ")";
 
     // drop table sql query
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
@@ -50,7 +50,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    User user = User.getInstance();
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -132,7 +131,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)));
                 user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)));
                 user.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD)));
-                user.setSalt(cursor.getBlob(cursor.getColumnIndex(COLUMN_USER_SALT)));
+                user.setSalt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_SALT)));
                 // Adding user record to list
                 userList.add(user);
             } while (cursor.moveToNext());
@@ -229,30 +228,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return true/false
      */
     public boolean checkUser(String email, String password) {
-
+        SQLiteDatabase db = this.getReadableDatabase();
         String generatedPassword = null;
-        String passwordToHash = password+user.getSalt().toString();
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-            md.update(user.getSalt());
-            byte[] hashedPassword = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
-            StringBuilder sb = new StringBuilder();
-            for(int i=0; i< hashedPassword.length ;i++){
-                sb.append(Integer.toString((hashedPassword[i] & 0xff) + 0x100, 16).substring(1));
+
+        //String selectQuery = "SELECT " + COLUMN_USER_SALT + " FROM " + TABLE_USER + " WHERE " + COLUMN_USER_EMAIL + " = "+email;
+        Cursor cursor1 = db.rawQuery("SELECT user_salt FROM user WHERE user_email = ?", new String[] {email});
+        if(cursor1.getCount() >= 1) {
+            while (cursor1.moveToNext()) {
+                byte[] bytes = (cursor1.getString(0).getBytes());
+                System.out.println("Printti"+cursor1.getString(0).getBytes());
+                String passwordToHash = password + bytes.toString();
+                System.out.println(passwordToHash);
+                try {
+                    MessageDigest md = MessageDigest.getInstance("SHA-512");
+                    md.update(bytes);
+                    System.out.println("Salt on " + cursor1.getBlob(0).toString());
+                    byte[] hashedPassword = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < hashedPassword.length; i++) {
+                        sb.append(Integer.toString((hashedPassword[i] & 0xff) + 0x100, 16).substring(1));
+                    }
+                    generatedPassword = sb.toString();
+                    password = generatedPassword;
+                    System.out.println("Passu on " + password);
+                } catch (NoSuchAlgorithmException x) {
+                    // do proper exception handling
+                }
             }
-            generatedPassword = sb.toString();
-            password = generatedPassword;
-            System.out.println("Passu on "+password);
-        } catch(NoSuchAlgorithmException x) {
-            // do proper exception handling
         }
+
 
 
         // array of columns to fetch
         String[] columns = {
                 COLUMN_USER_ID
         };
-        SQLiteDatabase db = this.getReadableDatabase();
+
         // selection criteria
         String selection = COLUMN_USER_EMAIL + " = ?" + " AND " + COLUMN_USER_PASSWORD + " = ?";
 
@@ -274,7 +285,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null);                      //The sort order
 
         int cursorCount = cursor.getCount();
-
+        cursor1.close();
         cursor.close();
         db.close();
         if (cursorCount > 0) {
