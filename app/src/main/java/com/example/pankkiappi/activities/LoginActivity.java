@@ -10,26 +10,19 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.widget.NestedScrollView;
 
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
-import com.example.pankkiappi.DrawerActivity;
+
 import com.example.pankkiappi.R;
 import com.example.pankkiappi.helpers.InputValidation;
-import com.example.pankkiappi.model.User;
+
 import com.example.pankkiappi.sql.DatabaseHelper;
-import com.google.android.material.snackbar.Snackbar;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.Random;
-import java.util.regex.Matcher;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private final AppCompatActivity activity = LoginActivity.this;
@@ -49,7 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private InputValidation inputValidation;
     private DatabaseHelper databaseHelper;
 
-    private User user;
+
 
 
     @Override
