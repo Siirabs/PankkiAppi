@@ -2,6 +2,7 @@ package com.example.pankkiappi.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -33,6 +34,8 @@ public class digitCode extends AppCompatActivity {
         setContentView(R.layout.digitcode);
 
         getSupportActionBar().hide();
+
+
         random();
 
     }
@@ -42,6 +45,7 @@ public class digitCode extends AppCompatActivity {
         int randomNumber = random.nextInt(999999 - 100000) + 100000;
 
         Snackbar snackbar = Snackbar.make(findViewById(R.id.top_coordinator), "Your verification code is " + randomNumber , Snackbar.LENGTH_INDEFINITE);
+
         snackbar.show();
         //Toast toast = Toast.makeText(this, "Your verification code is " + randomNumber, Toast.LENGTH_SHORT);
        // toast.setGravity(Gravity.TOP,0,0);

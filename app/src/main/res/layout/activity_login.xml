@@ -4,7 +4,7 @@
     android:id="@+id/nestedScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@drawable/gradient"
     android:paddingBottom="20dp"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
@@ -38,7 +38,8 @@
                 android:hint="@string/hint_email"
                 android:inputType="text"
                 android:maxLines="1"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:drawableLeft="@drawable/ic_action_user"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -54,7 +55,8 @@
                 android:hint="@string/hint_password"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:drawableLeft="@drawable/ic_action_pass"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatButton
