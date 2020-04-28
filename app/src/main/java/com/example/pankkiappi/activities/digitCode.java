@@ -17,6 +17,7 @@ import androidx.core.widget.NestedScrollView;
 
 import com.example.pankkiappi.R;
 import com.example.pankkiappi.DrawerActivity;
+import com.example.pankkiappi.sql.DatabaseHelper;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.security.SecureRandom;
@@ -32,13 +33,14 @@ public class digitCode extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.digitcode);
-
         getSupportActionBar().hide();
+
 
 
         random();
 
     }
+
 
     public void random() {
         final SecureRandom random = new SecureRandom();
