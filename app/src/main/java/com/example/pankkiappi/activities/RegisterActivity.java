@@ -156,7 +156,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             user.setName(textInputEditTextName.getText().toString().trim());
             user.setEmail(textInputEditTextEmail.getText().toString().trim());
 
-            //SecureRandom saltin generoimiseen
+            //Adds admin rights to user
+            if (user.getEmail().equals("admin@admin.com") && (user.getName().equals("admin"))) {
+                user.setType("admin");
+            } else {
+                user.setType("user");
+            }
+            //SecureRandom for generating random salt
             SecureRandom random = new SecureRandom();
             byte[] bytes = new byte[8];
             random.nextBytes(bytes);
