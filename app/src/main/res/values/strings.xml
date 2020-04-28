@@ -23,4 +23,6 @@
     <string name="text_title">Accounts</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="account_no">Account no:</string>
+
 </resources>

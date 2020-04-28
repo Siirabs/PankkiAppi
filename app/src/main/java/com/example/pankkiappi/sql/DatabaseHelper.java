@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -34,10 +33,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_USER_PASSWORD = "user_password";
     private static final String COLUMN_USER_SALT = "user_salt";
 
+
+    // Account Table name
+    private static final String ACCOUNTS_TABLE = "Accounts";
+
+    //Account Table Columns names
+    private static final String ACCOUNT_NUMBER = "_AccountNumber";
+    private static final String ACCOUNT_NAME = "AccountName";
+    private static final String ACCOUNT_BALANCE = "AccountBalance";
+
+    private static final int ACCOUNT_NUMBER_COLUMN = 1;
+    private static final int ACCOUNT_NAME_COLUMN = 2;
+    private static final int ACCOUNT_BALANCE_COLUMN = 3;
+
+
     // create table sql query
     private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_NAME + " TEXT,"
             + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT," + COLUMN_USER_SALT + " TEXT" + ")";
+
+
 
     // drop table sql query
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
@@ -289,4 +304,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return false;
     }
-}
+
+
+    }
+
+
+
+

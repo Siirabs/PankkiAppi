@@ -1,5 +1,7 @@
 package com.example.pankkiappi.model;
 
+import java.util.ArrayList;
+
 public class User {
     private int id;
     private String name;
@@ -23,7 +25,9 @@ public class User {
         this.name = name;
     }
 
-    public String getEmail() { return email; }
+    public String getEmail() {
+        return email;
+    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -37,10 +41,12 @@ public class User {
         this.password = password;
     }
 
-    public String getSalt() { return salt; }
+    public String getSalt() {
+        return salt;
+    }
 
     public void setSalt(String salt) {
         this.salt = salt;
     }
-}
 
+}

@@ -22,7 +22,8 @@ import com.google.android.material.navigation.NavigationView;
 
 public class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
-    
+    private Toolbar toolbar;
+    private ActionBarDrawerToggle toggle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +66,8 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                         new PaymentFragment()).commit();
                 break;
             case R.id.nav_logout:
+                Toast toast = Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT);
+                toast.show();
                 Intent logIntent = new Intent(this, LoginActivity.class);
                 startActivity(logIntent);
                 break;
