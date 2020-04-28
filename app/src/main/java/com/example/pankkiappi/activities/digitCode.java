@@ -44,13 +44,13 @@ public class digitCode extends AppCompatActivity {
         final SecureRandom random = new SecureRandom();
         int randomNumber = random.nextInt(999999);
 
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.top_coordinator), "Your verification code is " + randomNumber , Snackbar.LENGTH_INDEFINITE);
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.top_coordinator), "Your verification code is " + String.format("%06d",randomNumber) , Snackbar.LENGTH_INDEFINITE);
 
         snackbar.show();
         //Toast toast = Toast.makeText(this, "Your verification code is " + randomNumber, Toast.LENGTH_SHORT);
        // toast.setGravity(Gravity.TOP,0,0);
         //toast.show();
-        final String randomString = String.valueOf(randomNumber);
+        final String randomString = String.format("%06d",randomNumber);
 
         final android.widget.Button button = (android.widget.Button) findViewById(R.id.codeBtn);
         button.setOnClickListener(new View.OnClickListener() {
