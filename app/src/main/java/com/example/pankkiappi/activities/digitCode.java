@@ -19,7 +19,7 @@ import com.example.pankkiappi.R;
 import com.example.pankkiappi.DrawerActivity;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 import javax.xml.datatype.Duration;
 
@@ -41,8 +41,8 @@ public class digitCode extends AppCompatActivity {
     }
 
     public void random() {
-        final Random random = new Random();
-        int randomNumber = random.nextInt(999999 - 100000) + 100000;
+        final SecureRandom random = new SecureRandom();
+        int randomNumber = random.nextInt(999999);
 
         Snackbar snackbar = Snackbar.make(findViewById(R.id.top_coordinator), "Your verification code is " + randomNumber , Snackbar.LENGTH_INDEFINITE);
 
@@ -50,7 +50,7 @@ public class digitCode extends AppCompatActivity {
         //Toast toast = Toast.makeText(this, "Your verification code is " + randomNumber, Toast.LENGTH_SHORT);
        // toast.setGravity(Gravity.TOP,0,0);
         //toast.show();
-        final String r = String.valueOf(randomNumber);
+        final String randomString = String.valueOf(randomNumber);
 
         final android.widget.Button button = (android.widget.Button) findViewById(R.id.codeBtn);
         button.setOnClickListener(new View.OnClickListener() {
@@ -58,10 +58,10 @@ public class digitCode extends AppCompatActivity {
 
                 editText = (EditText) findViewById(R.id.digitCode);
                 final String temp = editText.getText().toString();
-                System.out.println(r);
+                System.out.println(randomString);
                 System.out.println(temp);
 
-                if (r.equals(temp)) {
+                if (randomString.equals(temp)) {
                     Intent drawerIntent = new Intent(activity, DrawerActivity.class);
                     startActivity(drawerIntent);
                 } else {

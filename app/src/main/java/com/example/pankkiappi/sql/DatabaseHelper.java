@@ -39,7 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // create table sql query
     private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_NAME + " TEXT,"
-            + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT," + COLUMN_USER_SALT + " TEXT," + COLUMN_USER_TYPE + " TEXT DEFAULT 'user'" + ")";
+            + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT," + COLUMN_USER_SALT + " TEXT," + COLUMN_USER_TYPE + " TEXT" + ")";
 
 
     // drop table sql query
