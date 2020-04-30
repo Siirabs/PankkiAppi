@@ -118,6 +118,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * This method is to validate the input text fields and verify login credentials from SQLite
      */
     private void verifyFromSQLite() {
+
         if (!inputValidation.isInputEditTextFilled(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
             return;
         }
@@ -131,8 +132,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (databaseHelper.checkUser(textInputEditTextEmail.getText().toString().trim()
                 , textInputEditTextPassword.getText().toString().trim())) {
+                String email = textInputEditTextEmail.getText().toString().trim();
                 emptyInputEditText();
                 Intent digitCode = new Intent(activity, digitCode.class);
+                digitCode.putExtra("EMAIL", email);
                 startActivity(digitCode);
                 //Intent accountsIntent = new Intent(activity, UsersListActivity.class);
                 //Intent drawerIntent = new Intent(activity, DrawerActivity.class);

@@ -239,10 +239,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursorCount > 0) {
             return true;
         }
-
+        cursor.close();
+        db.close();
         return false;
     }
 
+    public boolean checkAdmin(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        System.out.println(email);
+        Cursor cursor = db.rawQuery("SELECT user_type FROM user WHERE user_email = ?", new String[] {email});
+        if( cursor != null && cursor.moveToFirst() ){
+            if (cursor.getString(0).equals("admin")) {
+                System.out.println("on admin");
+                return true;
+            }
+        }
+        System.out.println("ei oo admin");
+        cursor.close();
+        db.close();
+        return false;
+
+    }
     /**
      * This method to check user exist or not
      *
