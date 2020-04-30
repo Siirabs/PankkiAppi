@@ -36,14 +36,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_USER_SALT = "user_salt";
     private static final String COLUMN_USER_TYPE = "user_type";
 
-    // create table sql query
+    // Account Table Columns names
+    private static final String COLUMN_ACCOUNT_ID = "account_id";
+    private static final String COLUMN_ACCOUNT_BALANCE = "account_name";
+    private static final String COLUMN_ACCOUNT_NAME = "account_email";
+
+
+    // create user table sql query
     private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_NAME + " TEXT,"
             + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT," + COLUMN_USER_SALT + " TEXT," + COLUMN_USER_TYPE + " TEXT" + ")";
 
+    // create account table sql query
+    private String CREATE_ACCOUNT_TABLE = "CREATE TABLE " + TABLE_ACCOUNT + "("
+            + COLUMN_ACCOUNT_ID + " TEXT," + COLUMN_ACCOUNT_BALANCE + " REAL,"
+            + COLUMN_ACCOUNT_NAME + " TEXT" + ")";
 
     // drop table sql query
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
+    private String DROP_ACCOUNT_TABLE = "DROP TABLE IF EXISTS " + TABLE_ACCOUNT;
 
     /**
      * Constructor
@@ -53,6 +64,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
+
 
 
     @Override
