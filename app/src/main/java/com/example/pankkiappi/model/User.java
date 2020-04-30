@@ -1,5 +1,7 @@
 package com.example.pankkiappi.model;
 
+import java.util.ArrayList;
+
 public class User {
     private int id;
     private String name;
@@ -7,6 +9,7 @@ public class User {
     private String password;
     private String salt;
     private String type;
+    private ArrayList<Account> accounts;
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -25,4 +28,11 @@ public class User {
 
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
+    public ArrayList<Account> getAccounts() { return accounts; }
+
+    public void addAccount(String accountName, double accountBalance) {
+        String accNo = "A " + (accounts.size() + 1);
+        Account account = new Account(accountName, accNo, accountBalance);
+        accounts.add(account);
+    }
 }

@@ -13,6 +13,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.pankkiappi.model.Account;
+import com.example.pankkiappi.model.Transaction;
 import com.example.pankkiappi.model.User;
 
 
@@ -105,6 +107,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void saveNewAccount(User user, Account account) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_ID, user.getId());
+        values.put(COLUMN_ACCOUNT_ID, account.getAccountNo());
+        values.put(COLUMN_ACCOUNT_NAME, account.getAccountName());
+        values.put(COLUMN_ACCOUNT_BALANCE, account.getAccountBalance());
+
+        db.insert(TABLE_ACCOUNT, null, values);
+
+        db.close();
+    }
+
+    public void saveNewTransaction(User user, String accountNo, Transaction transaction) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_ID, user.getId());
+        values.put(COLUMN_ACCOUNT_ID, accountNo);
+       // values.put(TRANSA);
+    }
     /**
      * This method is to fetch all user and return the list of user records
      *
