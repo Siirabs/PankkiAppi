@@ -22,7 +22,7 @@ public class Payee {
     }
     public String getPayeeID() { return payeeID; }
 
-    public void setDbId(long dbId) {
+    public void setId(long dbId) {
         this.dbId = dbId;
     }
 

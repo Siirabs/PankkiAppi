@@ -101,7 +101,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     private void loadFromDB() {
         DatabaseHelper db = new DatabaseHelper(getApplicationContext());
 
-        user.setPayeesFromDB(db.getPayeesFromCurrentProfile(user.getId()));
+        //user.setPayeesFromDB(db.getPayeesFromCurrentProfile(user.getId()));
         user.setAccountsFromDB(db.getAccountsFromCurrentProfile(user.getId()));
 
         for (int iAccount = 0; iAccount < user.getAccounts().size(); iAccount++) {

@@ -25,6 +25,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private final AppCompatActivity activity = LoginActivity.this;
@@ -65,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * This method is to initialize views
      */
     private void initViews() {
-
+        userPreferences = this.getSharedPreferences("LastProfileUsed", MODE_PRIVATE);
         nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollView);
 
         textInputLayoutEmail = (TextInputLayout) findViewById(R.id.textInputLayoutEmail);
@@ -138,28 +141,50 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (databaseHelper.checkUser(textInputEditTextEmail.getText().toString().trim()
                 , textInputEditTextPassword.getText().toString().trim())) {
-                String email = textInputEditTextEmail.getText().toString().trim();
-                emptyInputEditText();
-                Intent digitCode = new Intent(activity, digitCode.class);
-                digitCode.putExtra("EMAIL", email);
+            String email = textInputEditTextEmail.getText().toString().trim();
 
 
-                startActivity(digitCode);
+            ArrayList<User> users = databaseHelper.getAllUser();
+            if (users.size() > 0) {
+                for (int i = 0; i < users.size(); i++) {
+                    if (databaseHelper.checkUser(textInputEditTextEmail.getText().toString().trim()
+                            , textInputEditTextPassword.getText().toString().trim())) {
 
 
 
+                        // userPreferences.edit().putBoolean("rememberMe", chkRememberCred.isChecked()).apply();
+
+                        lastProfileUsed = users.get(i);
+
+                        SharedPreferences.Editor prefsEditor = userPreferences.edit();
+                        gson = new Gson();
+                        json = gson.toJson(lastProfileUsed);
+                        prefsEditor.putString("LastProfileUsed", json).apply();
+                        Intent digitCode = new Intent(activity, digitCode.class);
+                        emptyInputEditText();
+                        digitCode.putExtra("EMAIL", email);
+                        startActivity(digitCode);
+                    } else {
+                        Toast toast = Toast.makeText(this, "Wrong Email or Password", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+
+
+                }
             } else {
 
                 Toast toast = Toast.makeText(this, "Wrong Email or Password", Toast.LENGTH_LONG);
                 toast.show();
             }
-    }
+        }
 
-    /**
-     * This method is to empty all input edit text
-     */
-    private void emptyInputEditText() {
+            /**
+             * This method is to empty all input edit text
+             */
+
+        }
+    private void emptyInputEditText () {
         textInputEditTextEmail.setText(null);
         textInputEditTextPassword.setText(null);
     }
-}
+    }

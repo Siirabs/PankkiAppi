@@ -12,12 +12,12 @@ public class User {
     private ArrayList<Account> accounts = new ArrayList<>();
     private ArrayList<Payee> payees;
 
-    public void setInfo(int id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
+   // public void setInfo(int id, String name, String email) {
+       // this.id = id;
+        //this.name = name;
+       // this.email = email;
 
-    }
+    //}
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -39,7 +39,7 @@ public class User {
     public void setType(String type) { this.type = type; }
     public ArrayList<Account> getAccounts() { return accounts; }
     public ArrayList<Payee> getPayees() { return payees; }
-    public void setAccounts(ArrayList<Account> accounts) {this.accounts = accounts;}
+    //public void setAccounts(ArrayList<Account> accounts) {this.accounts = accounts;}
 
     public void setAccountsFromDB(ArrayList<Account> accounts) {
         this.accounts = accounts;

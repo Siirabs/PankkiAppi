@@ -116,15 +116,26 @@ public class AccountsFragment extends Fragment {
         gson = new Gson();
         String json = userPreferences.getString("LastProfileUsed", "");
         user = gson.fromJson(json, User.class);
-        if (json ==null) {
-            Toast.makeText(getActivity(), "Nullikka on", Toast.LENGTH_SHORT).show();
-        }
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 displayAccountDialog();
             }
         });
+
+        if (user.getAccounts().size() == 0) {
+            txtTitleMessage.setText("Add an Account with the button below");
+            txtDetailMessage.setVisibility(View.GONE);
+            lstAccounts.setVisibility(View.GONE);
+        } else {
+            txtTitleMessage.setText("Select an Account to view Transactions");
+            txtDetailMessage.setVisibility(View.VISIBLE);
+            lstAccounts.setVisibility(View.VISIBLE);
+        }
+
+        AccountAdapter adapter = new AccountAdapter(this.getActivity(), R.layout.lst_accounts, user.getAccounts());
+        lstAccounts.setAdapter(adapter);
 
     }
 

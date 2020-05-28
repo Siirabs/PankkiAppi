@@ -31,6 +31,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // User table name
     private static final String TABLE_USER = "user";
     private static final String TABLE_ACCOUNT = "account";
+    private static final String PAYEES_TABLE = "Payees";
+    private static final String TRANSACTIONS_TABLE = "Transactions";
 
     // User Table Columns names
     private static final String COLUMN_USER_ID = "user_id";
@@ -43,23 +45,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int USER_ID = 1;
     // Account Table Columns names
     private static final String COLUMN_ACCOUNT_ID = "account_id";
-    private static final String COLUMN_ACCOUNT_NAME = "account_email";
-    private static final String COLUMN_ACCOUNT_BALANCE = "account_name";
+    private static final String COLUMN_ACCOUNT_NAME = "account_name";
+    private static final String COLUMN_ACCOUNT_BALANCE = "account_balance";
 
     private static final int ACCOUNT_ID = 1;
     private static final int ACCOUNT_NAME = 2;
     private static final int ACCOUNT_BALANCE = 3;
 
-    private static final String PAYEES_TABLE = "Payees";
 
+    // Payee Table Columns names
     private static final String PAYEE_ID = "_PayeeID";
     private static final String PAYEE_NAME = "PayeeName";
 
     private static final int PAYEE_ID_COLUMN = 1;
     private static final int PAYEE_NAME_COLUMN = 2;
 
-    private static final String TRANSACTIONS_TABLE = "Transactions";
-
+    // Transaction Table Columns names
     private static final String TRANSACTION_ID = "_TransactionID";
     private static final String TIMESTAMP = "Timestamp";
     private static final String SENDING_ACCOUNT = "SendingAccount";
@@ -82,20 +83,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     PAYEE_ID + " TEXT NOT NULL, " +
                     PAYEE_NAME + " TEXT, " +
                     "PRIMARY KEY(" + COLUMN_USER_ID + "," + PAYEE_ID + "), " +
-                    "FOREIGN KEY(" + TABLE_USER + ") REFERENCES " + TABLE_USER + "(" + TABLE_USER + "))";
+                    "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + "))";
+
     // create user table sql query
     private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_NAME + " TEXT,"
             + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT," + COLUMN_USER_SALT + " TEXT," + COLUMN_USER_TYPE + " TEXT" + ")";
 
     // create account table sql query
-    private String CREATE_ACCOUNT_TABLE = "CREATE TABLE " + TABLE_ACCOUNT + "("
-            + COLUMN_ACCOUNT_ID + " TEXT," + COLUMN_ACCOUNT_BALANCE + " REAL,"
-            + COLUMN_ACCOUNT_NAME + " TEXT" + ")";
+    //private String CREATE_ACCOUNT_TABLE = "CREATE TABLE " + TABLE_ACCOUNT + "(" +
+            //COLUMN_USER_ID + " INTEGER NOT NULL, " +
+            // COLUMN_ACCOUNT_ID + " TEXT," + COLUMN_ACCOUNT_BALANCE + " REAL,"
+          //  + COLUMN_ACCOUNT_NAME + " TEXT" + ")";
+
+    private static final String CREATE_ACCOUNTS_TABLE =
+            "CREATE TABLE " + TABLE_ACCOUNT + " (" +
+                    COLUMN_USER_ID + " INTEGER NOT NULL, " +
+                    COLUMN_ACCOUNT_ID + " TEXT NOT NULL, " +
+                    COLUMN_ACCOUNT_NAME + " TEXT, " +
+                    COLUMN_ACCOUNT_BALANCE + " REAL, " +
+                    "PRIMARY KEY(" + COLUMN_USER_ID + "," + COLUMN_ACCOUNT_ID + "), " +
+                    "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + "))";
 
     // drop table sql query
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
     private String DROP_ACCOUNT_TABLE = "DROP TABLE IF EXISTS " + TABLE_ACCOUNT;
+    private String DROP_PAYEES_TABLE = "DROP TABLE IF EXISTS " + PAYEES_TABLE;
+    private String DROP_TRANSACTIONS_TABLE = "DROP TABLE IF EXISTS " + TRANSACTIONS_TABLE;
+
     private static final String CREATE_TRANSACTIONS_TABLE =
             "CREATE TABLE " + TRANSACTIONS_TABLE + " (" +
                     COLUMN_USER_ID + " INTEGER NOT NULL, " +
@@ -126,6 +141,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_USER_TABLE);
+        db.execSQL(CREATE_PAYEES_TABLE);
+        db.execSQL(CREATE_ACCOUNTS_TABLE);
+        db.execSQL(CREATE_TRANSACTIONS_TABLE);
+
     }
 
 
@@ -134,7 +153,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //Drop User Table if exist
         db.execSQL(DROP_USER_TABLE);
-
+        db.execSQL(PAYEES_TABLE);
+        db.execSQL(DROP_ACCOUNT_TABLE);
+        db.execSQL(TRANSACTIONS_TABLE);
         // Create tables again
         onCreate(db);
 
@@ -170,7 +191,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_ACCOUNT_BALANCE, account.getAccountBalance());
 
         db.insert(TABLE_ACCOUNT, null, values);
-
         db.close();
     }
 
@@ -187,7 +207,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      *
      * @return list
      */
-    public List<User> getAllUser() {
+    public ArrayList<User> getAllUser() {
+
+
         // array of columns to fetch
         String[] columns = {
                 COLUMN_USER_ID,
@@ -200,7 +222,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // sorting orders
         String sortOrder =
                 COLUMN_USER_NAME + " ASC";
-        List<User> userList = new ArrayList<User>();
+        ArrayList<User> userList = new ArrayList<User>();
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -282,7 +304,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public ArrayList<Payee> getPayeesFromCurrentProfile(long profileID) {
         ArrayList<Payee> payees = new ArrayList<>();
-        database = openHelper.getReadableDatabase();
+        database = this.getReadableDatabase();
 
         Cursor cursor = database.query(PAYEES_TABLE, null, null, null, null,
                 null ,null);
@@ -477,7 +499,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<Account> getAccountsFromCurrentProfile(long userID) {
 
         ArrayList<Account> accounts = new ArrayList<>();
-        database = openHelper.getReadableDatabase();
+        database = this.getReadableDatabase();
         Cursor cursor = database.query(TABLE_ACCOUNT, null, null, null, null,
                 null ,null);
         getAccountsFromCursor(userID, accounts, cursor);
