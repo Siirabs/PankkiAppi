@@ -29,7 +29,7 @@ public class User {
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
     public ArrayList<Account> getAccounts() { return accounts; }
-
+    
     public void addAccount(String accountName, double accountBalance) {
         String accNo = "A " + (accounts.size() + 1);
         Account account = new Account(accountName, accNo, accountBalance);
