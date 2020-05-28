@@ -15,9 +15,10 @@ import android.widget.Toast;
 
 import com.example.pankkiappi.R;
 import com.example.pankkiappi.helpers.InputValidation;
+
 import com.example.pankkiappi.model.User;
 import com.example.pankkiappi.sql.DatabaseHelper;
-import com.google.android.material.snackbar.Snackbar;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -25,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -102,6 +104,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         inputValidation = new InputValidation(activity);
         databaseHelper = new DatabaseHelper(activity);
         user = new User();
+
+
+
 
     }
 
@@ -187,8 +192,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             } catch(NoSuchAlgorithmException x) {
                 x.printStackTrace();
             }
-            // Snack Bar to show success message that record saved successfully
-            //Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG).show();
+
             Toast toast = Toast.makeText(this, "Registration succesful", Toast.LENGTH_LONG);
             toast.show();
             Intent loginactivity = new Intent(activity, LoginActivity.class);
@@ -197,8 +201,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
         } else {
-            // Snack Bar to show error message that record already exists
-            //Snackbar.make(nestedScrollView, getString(R.string.error_email_exists), Snackbar.LENGTH_LONG).show();
+
             Toast toast = Toast.makeText(this, "Email Already Exists", Toast.LENGTH_LONG);
             toast.show();
         }

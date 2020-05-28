@@ -14,12 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.pankkiappi.model.Account;
+import com.example.pankkiappi.model.Payee;
 import com.example.pankkiappi.model.Transaction;
 import com.example.pankkiappi.model.User;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-
+    private SQLiteDatabase database;
+    private SQLiteOpenHelper openHelper;
     // Database Version
     private static final int DATABASE_VERSION = 1;
 
@@ -38,12 +40,49 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_USER_SALT = "user_salt";
     private static final String COLUMN_USER_TYPE = "user_type";
 
+    private static final int USER_ID = 1;
     // Account Table Columns names
     private static final String COLUMN_ACCOUNT_ID = "account_id";
-    private static final String COLUMN_ACCOUNT_BALANCE = "account_name";
     private static final String COLUMN_ACCOUNT_NAME = "account_email";
+    private static final String COLUMN_ACCOUNT_BALANCE = "account_name";
 
+    private static final int ACCOUNT_ID = 1;
+    private static final int ACCOUNT_NAME = 2;
+    private static final int ACCOUNT_BALANCE = 3;
 
+    private static final String PAYEES_TABLE = "Payees";
+
+    private static final String PAYEE_ID = "_PayeeID";
+    private static final String PAYEE_NAME = "PayeeName";
+
+    private static final int PAYEE_ID_COLUMN = 1;
+    private static final int PAYEE_NAME_COLUMN = 2;
+
+    private static final String TRANSACTIONS_TABLE = "Transactions";
+
+    private static final String TRANSACTION_ID = "_TransactionID";
+    private static final String TIMESTAMP = "Timestamp";
+    private static final String SENDING_ACCOUNT = "SendingAccount";
+    private static final String DESTINATION_ACCOUNT = "DestinationAccount";
+    private static final String TRANSACTION_PAYEE = "Payee";
+    private static final String TRANSACTION_AMOUNT = "Amount";
+    private static final String TRANS_TYPE = "Type";
+
+    private static final int TRANSACTION_ID_COLUMN = 2;
+    private static final int TIMESTAMP_COLUMN = 3;
+    private static final int SENDING_ACCOUNT_COLUMN = 4;
+    private static final int DESTINATION_ACCOUNT_COLUMN = 5;
+    private static final int TRANSACTION_PAYEE_COLUMN = 6;
+    private static final int TRANSACTION_AMOUNT_COLUMN = 7;
+    private static final int TRANSACTION_TYPE_COLUMN = 8;
+
+    private static final String CREATE_PAYEES_TABLE =
+            "CREATE TABLE " + PAYEES_TABLE + " (" +
+                    COLUMN_USER_ID + " INTEGER NOT NULL, " +
+                    PAYEE_ID + " TEXT NOT NULL, " +
+                    PAYEE_NAME + " TEXT, " +
+                    "PRIMARY KEY(" + COLUMN_USER_ID + "," + PAYEE_ID + "), " +
+                    "FOREIGN KEY(" + TABLE_USER + ") REFERENCES " + TABLE_USER + "(" + TABLE_USER + "))";
     // create user table sql query
     private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_NAME + " TEXT,"
@@ -57,7 +96,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // drop table sql query
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
     private String DROP_ACCOUNT_TABLE = "DROP TABLE IF EXISTS " + TABLE_ACCOUNT;
-
+    private static final String CREATE_TRANSACTIONS_TABLE =
+            "CREATE TABLE " + TRANSACTIONS_TABLE + " (" +
+                    COLUMN_USER_ID + " INTEGER NOT NULL, " +
+                    COLUMN_ACCOUNT_ID + " TEXT NOT NULL, " +
+                    TRANSACTION_ID + " TEXT NOT NULL, " +
+                    TIMESTAMP + " TEXT, " +
+                    SENDING_ACCOUNT + " TEXT, " +
+                    DESTINATION_ACCOUNT + " TEXT, " +
+                    TRANSACTION_PAYEE + " TEXT, " +
+                    TRANSACTION_AMOUNT + " REAL, " +
+                    TRANS_TYPE + " TEXT, " +
+                    "PRIMARY KEY(" + COLUMN_USER_ID + "," + COLUMN_ACCOUNT_ID + "," + TRANSACTION_ID + "), " +
+                    "FOREIGN KEY(" + COLUMN_USER_ID + "," + COLUMN_ACCOUNT_ID + ") REFERENCES " +
+                    TABLE_ACCOUNT + "(" + COLUMN_USER_ID + "," + COLUMN_ACCOUNT_ID + ")," +
+                    "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + "))";
     /**
      * Constructor
      *
@@ -227,6 +280,76 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param email
      * @return true/false
      */
+    public ArrayList<Payee> getPayeesFromCurrentProfile(long profileID) {
+        ArrayList<Payee> payees = new ArrayList<>();
+        database = openHelper.getReadableDatabase();
+
+        Cursor cursor = database.query(PAYEES_TABLE, null, null, null, null,
+                null ,null);
+        getPayeesFromCursor(profileID, payees, cursor);
+
+        cursor.close();
+        database.close();
+
+        return payees;
+    }
+
+    private void getPayeesFromCursor(long profileID, ArrayList<Payee> payees, Cursor cursor) {
+
+        while (cursor.moveToNext()) {
+
+            if (profileID == cursor.getLong(USER_ID)) {
+                long id = cursor.getLong(USER_ID);
+                String payeeID = cursor.getString(PAYEE_ID_COLUMN);
+                String payeeName = cursor.getString(PAYEE_NAME_COLUMN);
+
+                payees.add(new Payee(payeeID, payeeName, id));
+            }
+        }
+    }
+
+    public ArrayList<Transaction> getTransactionsFromCurrentAccount(long profileID, String accountNo) {
+
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        database = openHelper.getReadableDatabase();
+
+        Cursor cursor = database.query(TRANSACTIONS_TABLE, null, null, null, null,
+                null ,null);
+
+        getTransactionsFromCursor(profileID, accountNo, transactions, cursor);
+
+        cursor.close();
+        database.close();
+
+        return transactions;
+    }
+    private void getTransactionsFromCursor(long profileID, String accountNo, ArrayList<Transaction> transactions, Cursor cursor) {
+
+        while (cursor.moveToNext()) {
+
+            if (profileID == cursor.getLong(USER_ID)) {
+                long id = cursor.getLong(USER_ID);
+                if (accountNo.equals(cursor.getString(ACCOUNT_ID))) {
+                    String transactionID = cursor.getString(TRANSACTION_ID_COLUMN);
+                    String timestamp = cursor.getString(TIMESTAMP_COLUMN);
+                    String sendingAccount = cursor.getString(SENDING_ACCOUNT_COLUMN);
+                    String destinationAccount = cursor.getString(DESTINATION_ACCOUNT_COLUMN);
+                    String payee = cursor.getString(TRANSACTION_PAYEE_COLUMN);
+                    double amount = cursor.getDouble(TRANSACTION_AMOUNT_COLUMN);
+                    Transaction.TRANSACTION_TYPE transactionType = Transaction.TRANSACTION_TYPE.valueOf(cursor.getString(TRANSACTION_TYPE_COLUMN));
+
+                    if (transactionType == Transaction.TRANSACTION_TYPE.PAYMENT) {
+                        transactions.add(new Transaction(transactionID, timestamp, payee, amount, id));
+                    } else if (transactionType == Transaction.TRANSACTION_TYPE.TRANSFER) {
+                        transactions.add(new Transaction(transactionID, timestamp, sendingAccount, destinationAccount, amount, id));
+                    } else if (transactionType == Transaction.TRANSACTION_TYPE.DEPOSIT) {
+                        transactions.add(new Transaction(transactionID, timestamp, amount, id));
+                    }
+                }
+
+            }
+        }
+    }
     public boolean checkUser(String email) {
 
         // array of columns to fetch
@@ -349,5 +472,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return false;
+    }
+
+    public ArrayList<Account> getAccountsFromCurrentProfile(long userID) {
+
+        ArrayList<Account> accounts = new ArrayList<>();
+        database = openHelper.getReadableDatabase();
+        Cursor cursor = database.query(TABLE_ACCOUNT, null, null, null, null,
+                null ,null);
+        getAccountsFromCursor(userID, accounts, cursor);
+
+        cursor.close();
+        database.close();
+
+        return accounts;
+    }
+    private void getAccountsFromCursor(long userID, ArrayList<Account> accounts, Cursor cursor) {
+
+        while (cursor.moveToNext()) {
+
+            if (userID == cursor.getLong(USER_ID)) {
+                long id = cursor.getLong(USER_ID);
+                String accountNo = cursor.getString(ACCOUNT_ID);
+                String accountName = cursor.getString(ACCOUNT_NAME);
+                double accountBalance = cursor.getDouble(ACCOUNT_BALANCE);
+
+                accounts.add(new Account(accountName, accountNo, accountBalance, id));
+            }
+        }
     }
 }

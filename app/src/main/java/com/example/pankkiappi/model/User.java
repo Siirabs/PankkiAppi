@@ -9,7 +9,15 @@ public class User {
     private String password;
     private String salt;
     private String type;
-    private ArrayList<Account> accounts;
+    private ArrayList<Account> accounts = new ArrayList<>();
+    private ArrayList<Payee> payees;
+
+    public void setInfo(int id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+
+    }
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -20,7 +28,8 @@ public class User {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
-    public String getPassword() { return password; }
+    public String getPassword() {
+        return password; }
     public void setPassword(String password) { this.password = password; }
 
     public String getSalt() { return salt; }
@@ -29,10 +38,20 @@ public class User {
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
     public ArrayList<Account> getAccounts() { return accounts; }
+    public ArrayList<Payee> getPayees() { return payees; }
+    public void setAccounts(ArrayList<Account> accounts) {this.accounts = accounts;}
+
+    public void setAccountsFromDB(ArrayList<Account> accounts) {
+        this.accounts = accounts;
+    }
 
     public void addAccount(String accountName, double accountBalance) {
         String accNo = "A " + (accounts.size() + 1);
         Account account = new Account(accountName, accNo, accountBalance);
         accounts.add(account);
     }
+    public void setPayeesFromDB(ArrayList<Payee> payees) {
+        this.payees = payees;
+    }
+
 }

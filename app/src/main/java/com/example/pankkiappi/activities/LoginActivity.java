@@ -1,6 +1,7 @@
 package com.example.pankkiappi.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,11 +18,12 @@ import android.widget.Toast;
 import com.example.pankkiappi.R;
 import com.example.pankkiappi.helpers.InputValidation;
 
+import com.example.pankkiappi.model.User;
 import com.example.pankkiappi.sql.DatabaseHelper;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
+import com.google.gson.Gson;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -41,7 +43,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private InputValidation inputValidation;
     private DatabaseHelper databaseHelper;
-
+    private User lastProfileUsed;
+    private Gson gson;
+    private String json;
+    private SharedPreferences userPreferences;
 
 
 
@@ -81,6 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void initListeners() {
         appCompatButtonLogin.setOnClickListener(this);
         textViewLinkRegister.setOnClickListener(this);
+
     }
 
     /**
@@ -136,17 +142,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 emptyInputEditText();
                 Intent digitCode = new Intent(activity, digitCode.class);
                 digitCode.putExtra("EMAIL", email);
-                startActivity(digitCode);
-                //Intent accountsIntent = new Intent(activity, UsersListActivity.class);
-                //Intent drawerIntent = new Intent(activity, DrawerActivity.class);
-                // accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
 
-                //startActivity(drawerIntent);
+
+                startActivity(digitCode);
+
 
 
             } else {
-                // Snack Bar to show success message that record is wrong
-                //Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show();
+
                 Toast toast = Toast.makeText(this, "Wrong Email or Password", Toast.LENGTH_LONG);
                 toast.show();
             }

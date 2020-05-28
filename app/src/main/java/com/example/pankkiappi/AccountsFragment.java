@@ -55,7 +55,9 @@ public class AccountsFragment extends Fragment {
                 Toast toast = Toast.makeText(getActivity(), "Account Creation Cancelled", Toast.LENGTH_SHORT);
                 toast.show();
             } else if (v.getId() == btnAddAccount.getId()) {
-                addAccount();
+                    addAccount();
+
+
             }
         }
     };
@@ -114,7 +116,9 @@ public class AccountsFragment extends Fragment {
         gson = new Gson();
         String json = userPreferences.getString("LastProfileUsed", "");
         user = gson.fromJson(json, User.class);
-
+        if (json ==null) {
+            Toast.makeText(getActivity(), "Nullikka on", Toast.LENGTH_SHORT).show();
+        }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -150,9 +154,12 @@ public class AccountsFragment extends Fragment {
 
                 boolean match = false;
 
-                for (int i = 0; i < user.getAccounts().size(); i++) {
-                    if (edtAccountName.getText().toString().equalsIgnoreCase(user.getAccounts().get(i).getAccountName())) {
-                        match = true;
+
+                String editAccountName = edtAccountName.getText().toString();
+
+                for(com.example.pankkiappi.model.Account account : user.getAccounts()){
+                    if(account.getAccountName() != null && account.getAccountName() != null){
+                        match = editAccountName.contentEquals(account.getAccountName());
                     }
                 }
 
