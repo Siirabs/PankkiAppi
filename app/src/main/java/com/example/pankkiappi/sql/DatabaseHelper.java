@@ -41,7 +41,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_USER_SALT = "user_salt";
     private static final String COLUMN_USER_TYPE = "user_type";
 
-    private static final int USER_ID = 1;
+    private static final int USER_ID = 0;
     // Account Table Columns names
     private static final String COLUMN_ACCOUNT_ID = "account_id";
     private static final String COLUMN_ACCOUNT_NAME = "account_name";
@@ -193,6 +193,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void overwriteAccount(User user, Account account) {
+
+        database = openHelper.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_USER_ID,user.getId());
+        cv.put(COLUMN_ACCOUNT_ID,account.getAccountNo());
+        cv.put(COLUMN_ACCOUNT_NAME,account.getAccountName());
+        cv.put(COLUMN_ACCOUNT_BALANCE, account.getAccountBalance());
+
+        database.update(TABLE_ACCOUNT, cv, COLUMN_USER_ID + "=? AND " + COLUMN_ACCOUNT_ID +"=?",
+                new String[] {String.valueOf(user.getId()), account.getAccountNo()});
+        database.close();
+    }
+
     public void saveNewTransaction(User user, String accountNo, Transaction transaction) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -332,7 +347,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<Transaction> getTransactionsFromCurrentAccount(long profileID, String accountNo) {
 
         ArrayList<Transaction> transactions = new ArrayList<>();
-        database = openHelper.getReadableDatabase();
+        database = this.getReadableDatabase();
 
         Cursor cursor = database.query(TRANSACTIONS_TABLE, null, null, null, null,
                 null ,null);
