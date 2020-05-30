@@ -40,6 +40,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_USER_PASSWORD = "user_password";
     private static final String COLUMN_USER_SALT = "user_salt";
     private static final String COLUMN_USER_TYPE = "user_type";
+    private static final String COLUMN_USER_CITY = "user_city";
+    private static final String COLUMN_USER_POSTAL_CODE = "user_postal_code";
+    private static final String COLUMN_USER_ADDRESS = "user_address";
+
 
     private static final int USER_ID = 0;
     // Account Table Columns names
@@ -86,8 +90,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // create user table sql query
     private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
-            + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_NAME + " TEXT,"
-            + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT," + COLUMN_USER_SALT + " TEXT," + COLUMN_USER_TYPE + " TEXT" + ")";
+            + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_NAME + " TEXT NOT NULL,"
+            + COLUMN_USER_EMAIL + " TEXT NOT NULL," + COLUMN_USER_PASSWORD + " TEXT NOT NULL," + COLUMN_USER_SALT + " TEXT NOT NULL," + COLUMN_USER_TYPE + " TEXT NOT NULL," +
+            COLUMN_USER_CITY + " TEXT NOT NULL," + COLUMN_USER_POSTAL_CODE + " TEXT NOT NULL," + COLUMN_USER_ADDRESS + " TEXT NOT NULL" + ")";
 
     // create account table sql query
     //private String CREATE_ACCOUNT_TABLE = "CREATE TABLE " + TABLE_ACCOUNT + "(" +
@@ -174,6 +179,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_USER_PASSWORD, user.getPassword());
         values.put(COLUMN_USER_SALT, user.getSalt());
         values.put(COLUMN_USER_TYPE, user.getType());
+        values.put(COLUMN_USER_CITY, user.getCity());
+        values.put(COLUMN_USER_POSTAL_CODE, user.getPostalCode());
+        values.put(COLUMN_USER_ADDRESS, user.getAddress());
 
         // Inserting Row
         db.insert(TABLE_USER, null, values);
@@ -231,7 +239,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_USER_NAME,
                 COLUMN_USER_PASSWORD,
                 COLUMN_USER_SALT,
-                COLUMN_USER_TYPE
+                COLUMN_USER_TYPE,
+                COLUMN_USER_CITY,
+                COLUMN_USER_POSTAL_CODE,
+                COLUMN_USER_ADDRESS
         };
         // sorting orders
         String sortOrder =
@@ -265,6 +276,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 user.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD)));
                 user.setSalt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_SALT)));
                 user.setType(cursor.getString(cursor.getColumnIndex(COLUMN_USER_TYPE)));
+                user.setType(cursor.getString(cursor.getColumnIndex(COLUMN_USER_CITY)));
+                user.setType(cursor.getString(cursor.getColumnIndex(COLUMN_USER_POSTAL_CODE)));
+                user.setType(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ADDRESS)));
                 // Adding user record to list
                 userList.add(user);
             } while (cursor.moveToNext());
@@ -290,6 +304,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_USER_PASSWORD, user.getPassword());
         values.put(COLUMN_USER_SALT, user.getSalt());
         values.put(COLUMN_USER_TYPE, user.getType());
+        values.put(COLUMN_USER_CITY, user.getCity());
+        values.put(COLUMN_USER_POSTAL_CODE, user.getPostalCode());
+        values.put(COLUMN_USER_ADDRESS, user.getAddress());
 
         // updating row
         db.update(TABLE_USER, values, COLUMN_USER_ID + " = ?",

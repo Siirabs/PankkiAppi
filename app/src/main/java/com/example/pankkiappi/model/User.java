@@ -8,6 +8,9 @@ public class User {
     private String email;
     private String password;
     private String salt;
+    private String city;
+    private String postalCode;
+    private String address;
     private String type;
     private ArrayList<Account> accounts = new ArrayList<>();
     private ArrayList<Payee> payees;
@@ -31,6 +34,15 @@ public class User {
     public String getPassword() {
         return password; }
     public void setPassword(String password) { this.password = password; }
+
+    public String getCity() { return city;}
+    public void setCity(String city) {this.city = city;}
+
+    public String getPostalCode() { return postalCode;}
+    public void setPostalCode(String postalCode) {this.postalCode = postalCode;}
+
+    public String getAddress() { return address;}
+    public void setAddress(String address) {this.address = address;}
 
     public String getSalt() { return salt; }
     public void setSalt(String salt) { this.salt = salt; }

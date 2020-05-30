@@ -38,11 +38,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private TextInputLayout textInputLayoutEmail;
     private TextInputLayout textInputLayoutPassword;
     private TextInputLayout textInputLayoutConfirmPassword;
+    private TextInputLayout textInputLayoutCity;
+    private TextInputLayout textInputLayoutPostalCode;
+    private TextInputLayout textInputLayoutAddress;
 
     private TextInputEditText textInputEditTextName;
     private TextInputEditText textInputEditTextEmail;
     private TextInputEditText textInputEditTextPassword;
     private TextInputEditText textInputEditTextConfirmPassword;
+    private TextInputEditText textInputEditTextCity;
+    private TextInputEditText textInputEditTextPostalCode;
+    private TextInputEditText textInputEditTextAddress;
 
     private AppCompatButton appCompatButtonRegister;
     private AppCompatTextView appCompatTextViewLoginLink;
@@ -76,11 +82,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         textInputLayoutEmail = (TextInputLayout) findViewById(R.id.textInputLayoutEmail);
         textInputLayoutPassword = (TextInputLayout) findViewById(R.id.textInputLayoutPassword);
         textInputLayoutConfirmPassword = (TextInputLayout) findViewById(R.id.textInputLayoutConfirmPassword);
+        textInputLayoutCity = (TextInputLayout) findViewById(R.id.textInputLayoutCity);
+        textInputLayoutPostalCode = (TextInputLayout) findViewById(R.id.textInputLayoutPostalCode);
+        textInputLayoutAddress = (TextInputLayout) findViewById(R.id.textInputLayoutAddress);
 
         textInputEditTextName = (TextInputEditText) findViewById(R.id.textInputEditTextName);
         textInputEditTextEmail = (TextInputEditText) findViewById(R.id.textInputEditTextEmail);
         textInputEditTextPassword = (TextInputEditText) findViewById(R.id.textInputEditTextPassword);
         textInputEditTextConfirmPassword = (TextInputEditText) findViewById(R.id.textInputEditTextConfirmPassword);
+        textInputEditTextCity = (TextInputEditText) findViewById(R.id.textInputEditTextCity);
+        textInputEditTextPostalCode = (TextInputEditText) findViewById(R.id.textInputEditTextPostalCode);
+        textInputEditTextAddress = (TextInputEditText) findViewById(R.id.textInputEditTextAddress);
 
         appCompatButtonRegister = (AppCompatButton) findViewById(R.id.appCompatButtonRegister);
 
@@ -146,6 +158,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (!inputValidation.isInputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_password))) {
             return;
         }
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextCity, textInputLayoutCity, getString(R.string.error_message_city))) {
+            return;
+        }
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextPostalCode, textInputLayoutPostalCode, getString(R.string.error_message_postal_code))) {
+            return;
+        }
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextAddress, textInputLayoutAddress, getString(R.string.error_message_address))) {
+            return;
+        }
 
        // if (!inputValidation.isValidPassword(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_invalid_password))) {
             //return;
@@ -160,6 +181,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             user.setName(textInputEditTextName.getText().toString().trim());
             user.setEmail(textInputEditTextEmail.getText().toString().trim());
+            user.setCity(textInputEditTextCity.getText().toString().trim());
+            user.setPostalCode(textInputEditTextPostalCode.getText().toString().trim());
+            user.setAddress(textInputEditTextAddress.getText().toString().trim());
 
             //Adds admin rights to user
             if (user.getEmail().equals("admin@admin.com") && (user.getName().equals("admin"))) {
@@ -186,6 +210,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     sb.append(Integer.toString((hashedPassword[i] & 0xff) + 0x100, 16).substring(1));
                 }
                 generatedPassword = sb.toString();
+
                 user.setSalt(saltString);
                 user.setPassword(generatedPassword);
                 databaseHelper.addUser(user);
@@ -217,6 +242,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         textInputEditTextEmail.setText(null);
         textInputEditTextPassword.setText(null);
         textInputEditTextConfirmPassword.setText(null);
+        textInputEditTextCity.setText(null);
+        textInputEditTextPostalCode.setText(null);
+        textInputEditTextAddress.setText(null);
     }
 }
 

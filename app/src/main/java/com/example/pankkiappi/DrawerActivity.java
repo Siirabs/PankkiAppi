@@ -111,6 +111,11 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new PaymentFragment()).commit();
                 break;
+
+            case R.id.nav_settings:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new SettingsFragment()).commit();
+                break;
             case R.id.nav_logout:
                 Toast toast = Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT);
                 toast.show();
