@@ -73,7 +73,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         userPreferences = this.getSharedPreferences("LastProfileUsed", MODE_PRIVATE);
         gson = new Gson();
         json = userPreferences.getString("LastProfileUsed", "");
-        user = gson.fromJson(json, User.class);
+            user = gson.fromJson(json, User.class);
 
         loadFromDB();
         SharedPreferences.Editor prefsEditor = userPreferences.edit();

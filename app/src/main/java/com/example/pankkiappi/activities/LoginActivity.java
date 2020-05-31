@@ -12,6 +12,7 @@ import androidx.core.widget.NestedScrollView;
 
 import android.view.View;
 
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 
@@ -41,7 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextInputEditText textInputEditTextPassword;
 
     private AppCompatButton appCompatButtonLogin;
-
+    private CheckBox checkBox;
     private AppCompatTextView textViewLinkRegister;
 
     private InputValidation inputValidation;
@@ -78,8 +79,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         textInputEditTextPassword = (TextInputEditText) findViewById(R.id.textInputEditTextPassword);
 
         appCompatButtonLogin = (AppCompatButton) findViewById(R.id.appCompatButtonLogin);
+        checkBox = (CheckBox) findViewById(R.id.chk_remember);
 
         textViewLinkRegister = (AppCompatTextView) findViewById(R.id.textViewLinkRegister);
+
+        //SharedPreferences userPreferences = this.getSharedPreferences("LastProfileUsed", MODE_PRIVATE);
+        //Gson gson = new Gson();
+        //String json = userPreferences.getString("LastProfileUsed", "");
+        //User user = gson.fromJson(json, User.class);
 
     }
 
@@ -90,6 +97,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         appCompatButtonLogin.setOnClickListener(this);
         textViewLinkRegister.setOnClickListener(this);
 
+       // if (checkBox.isChecked()) {
+
+         //   gson = new Gson();
+           // json = userPreferences.getString("LastProfileUsed", "");
+            //lastProfileUsed = gson.fromJson(json, User.class);
+
+            //textInputEditTextEmail.setText(lastProfileUsed.getEmail());
+            //textInputEditTextPassword.setText(lastProfileUsed.getPassword());
+        //}
     }
 
     /**
@@ -100,6 +116,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         inputValidation = new InputValidation(activity);
 
     }
+
+   // @Override
+    //public void onStop() {
+      //  if (lastProfileUsed != null) {
+        //    if (textInputEditTextEmail.getText().toString().equals(lastProfileUsed.getEmail()) && textInputEditTextPassword.getText().toString().equals(lastProfileUsed.getPassword())) {
+          //      userPreferences.edit().putBoolean("rememberMe", checkBox.isChecked()).apply();
+
+            ////  userPreferences.edit().putBoolean("rememberMe", false).apply();
+            //}
+        //}
+        //super.onStop();
+    //}
 
     /**
      * This implemented method is to listen the click on view
@@ -145,14 +173,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
             ArrayList<User> users = databaseHelper.getAllUser();
+
+            boolean match = false;
             if (users.size() > 0) {
                 for (int i = 0; i < users.size(); i++) {
-                    if (databaseHelper.checkUser(textInputEditTextEmail.getText().toString().trim()
-                            , textInputEditTextPassword.getText().toString().trim())) {
+                    if (textInputEditTextEmail.getText().toString().equals(users.get(i).getEmail())) {
 
 
-
-                        // userPreferences.edit().putBoolean("rememberMe", chkRememberCred.isChecked()).apply();
+                       match = true;
+                        //userPreferences.edit().putBoolean("rememberMe", checkBox.isChecked()).apply();
 
                         lastProfileUsed = users.get(i);
 
@@ -164,12 +193,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         emptyInputEditText();
                         digitCode.putExtra("EMAIL", email);
                         startActivity(digitCode);
-                    } else {
-                        Toast toast = Toast.makeText(this, "Wrong Email or Password", Toast.LENGTH_LONG);
-                        toast.show();
                     }
 
-
+                }
+                if (!match) {
+                    Toast toast = Toast.makeText(this, "Wrong Email or Password", Toast.LENGTH_LONG);
+                    toast.show();
                 }
             } else {
 

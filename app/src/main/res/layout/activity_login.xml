@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="0dp"
             android:src="@drawable/pepecoin" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/textInputLayoutEmail"
 
-            android:layout_marginTop="40dp">
+            android:layout_marginTop="20dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputEditTextEmail"
@@ -59,11 +59,19 @@
                 android:drawableLeft="@drawable/ic_action_pass"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <CheckBox
+            android:id="@+id/chk_remember"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/text_remember"
+            android:textColor="@android:color/white"/>
+
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/appCompatButtonLogin"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="10dp"
             android:background="@color/colorTextHint"
             android:text="@string/text_login" />
 

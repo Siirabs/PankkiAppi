@@ -9,6 +9,7 @@
     <string name="hint_postalCode">Postal code</string>
     <string name="hint_address">Address</string>
     <string name="text_login">Login</string>
+    <string name="text_remember">Remember login</string>
     <string name="text_register">Register</string>
     <string name="error_message_name">Enter Full Name</string>
     <string name="error_message_email">Enter Valid Email</string>
