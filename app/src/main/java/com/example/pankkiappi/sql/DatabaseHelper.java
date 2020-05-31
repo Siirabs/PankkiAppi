@@ -276,9 +276,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 user.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD)));
                 user.setSalt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_SALT)));
                 user.setType(cursor.getString(cursor.getColumnIndex(COLUMN_USER_TYPE)));
-                user.setType(cursor.getString(cursor.getColumnIndex(COLUMN_USER_CITY)));
-                user.setType(cursor.getString(cursor.getColumnIndex(COLUMN_USER_POSTAL_CODE)));
-                user.setType(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ADDRESS)));
+                user.setCity(cursor.getString(cursor.getColumnIndex(COLUMN_USER_CITY)));
+                user.setPostalCode(cursor.getString(cursor.getColumnIndex(COLUMN_USER_POSTAL_CODE)));
+                user.setAddress(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ADDRESS)));
                 // Adding user record to list
                 userList.add(user);
             } while (cursor.moveToNext());
