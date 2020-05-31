@@ -101,6 +101,10 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new AccountsFragment()).commit();
                 break;
+            case R.id.nav_cards:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new CardsFragment()).commit();
+                break;
             case R.id.nav_deposit:
                 displayDepositDialog();
             case R.id.nav_transfer:
