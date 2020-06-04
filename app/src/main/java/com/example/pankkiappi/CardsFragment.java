@@ -111,10 +111,16 @@ public class CardsFragment extends Fragment {
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.support_simple_spinner_dropdown_item, cardList);
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                R.layout.spinner_item, cardList);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(0);
+        if(user.getAccounts().size() == 0) {
+            Toast toast = Toast.makeText(getContext(), "Create account first", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+
         CardDialog.show();
 
     }
@@ -140,11 +146,6 @@ public class CardsFragment extends Fragment {
 
     public void addCard() {
 
-        if(user.getAccounts().size() == 0) {
-            Toast toast = Toast.makeText(getContext(), "Create account first", Toast.LENGTH_SHORT);
-            toast.show();
-            return;
-        }
 
 
 
