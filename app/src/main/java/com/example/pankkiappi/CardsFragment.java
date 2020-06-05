@@ -21,10 +21,13 @@ import androidx.fragment.app.Fragment;
 
 import com.example.pankkiappi.adapters.AccountAdapter;
 import com.example.pankkiappi.model.Account;
+import com.example.pankkiappi.model.Card;
 import com.example.pankkiappi.model.User;
+import com.example.pankkiappi.sql.DatabaseHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -121,6 +124,7 @@ public class CardsFragment extends Fragment {
             return;
         }
 
+
         CardDialog.show();
 
     }
@@ -145,8 +149,19 @@ public class CardsFragment extends Fragment {
     }
 
     public void addCard() {
+        String account = spinner.getSelectedItem().toString();
+        DatabaseHelper db = new DatabaseHelper(getActivity().getApplicationContext());
+        final SecureRandom random = new SecureRandom();
+        int randomNumber = random.nextInt(999999);
+        String cardNumber = Integer.toString(randomNumber);
 
-
+        int cvc = random.nextInt(999);
+        db.saveNewCard(cardNumber, account, cvc);
+        ArrayList<Card> cards = new ArrayList<>();
+        for (Account acc : user.getAccounts())  {
+            cards.addAll(acc.getCards());
+        }
+        CardDialog.dismiss();
 
 
 

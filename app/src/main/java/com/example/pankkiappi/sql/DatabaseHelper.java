@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // User table name
     private static final String TABLE_USER = "user";
     private static final String TABLE_ACCOUNT = "account";
+    private static final String TABLE_CARD = "card";
     private static final String PAYEES_TABLE = "Payees";
     private static final String TRANSACTIONS_TABLE = "Transactions";
 
@@ -56,7 +58,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int ACCOUNT_NAME = 2;
     private static final int ACCOUNT_BALANCE = 3;
 
-
+    // Card Table Columns names
+    private static final String CARD_NUMBER = "card_number";
+    private static final String CVC = "cvc";
+    private static final String LINKED_ACCOUNT = "linked_account";
     // Payee Table Columns names
     private static final String PAYEE_ID = "_PayeeID";
     private static final String PAYEE_NAME = "PayeeName";
@@ -109,9 +114,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "PRIMARY KEY(" + COLUMN_USER_ID + "," + COLUMN_ACCOUNT_ID + "), " +
                     "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + "))";
 
+    private static final String CREATE_CARD_TABLE = "CREATE TABLE " + TABLE_CARD + "(" +
+            CARD_NUMBER + " INTEGER PRIMARY KEY, " +
+            LINKED_ACCOUNT + " INTEGER NOT NULL, " +
+            CVC + " INTEGER NOT NULL)";
+
     // drop table sql query
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
     private String DROP_ACCOUNT_TABLE = "DROP TABLE IF EXISTS " + TABLE_ACCOUNT;
+    private String DROP_CARD_TABLE = "DROP TABLE IF EXISTS " + TABLE_CARD;
     private String DROP_PAYEES_TABLE = "DROP TABLE IF EXISTS " + PAYEES_TABLE;
     private String DROP_TRANSACTIONS_TABLE = "DROP TABLE IF EXISTS " + TRANSACTIONS_TABLE;
 
@@ -147,6 +158,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_USER_TABLE);
         db.execSQL(CREATE_PAYEES_TABLE);
         db.execSQL(CREATE_ACCOUNTS_TABLE);
+        db.execSQL(CREATE_CARD_TABLE);
         db.execSQL(CREATE_TRANSACTIONS_TABLE);
 
     }
@@ -202,6 +214,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void saveNewCard(String cardNumber, String linkedAccount, int cvc) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(CARD_NUMBER, cardNumber);
+        values.put(LINKED_ACCOUNT, linkedAccount);
+        values.put(CVC, cvc);
+
+        db.insert(TABLE_CARD, null, values);
+    }
     public void overwriteAccount(User user, Account account) {
 
         database = openHelper.getWritableDatabase();
@@ -334,7 +356,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * This method to check user exist or not
      *
-     * @param email
+     * @param
      * @return true/false
      */
     public ArrayList<Payee> getPayeesFromCurrentProfile(long profileID) {

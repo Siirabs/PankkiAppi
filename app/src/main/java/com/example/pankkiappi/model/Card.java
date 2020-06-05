@@ -10,4 +10,7 @@ public class Card {
         this.cvc = cvc;
     }
 
+    public String getCardNumber() { return cardNumber;}
+
+    public int getCvc() {return cvc;}
 }

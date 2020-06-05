@@ -13,6 +13,7 @@ public class User {
     private String address;
     private String type;
     private ArrayList<Account> accounts = new ArrayList<>();
+
     private ArrayList<Payee> payees;
 
    // public void setInfo(int id, String name, String email) {
@@ -61,6 +62,8 @@ public class User {
         Account account = new Account(accountName, accNo, accountBalance);
         accounts.add(account);
     }
+
+
     public void setPayeesFromDB(ArrayList<Payee> payees) {
         this.payees = payees;
     }

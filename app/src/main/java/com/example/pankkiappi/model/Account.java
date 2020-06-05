@@ -9,12 +9,14 @@ public class Account {
     private String accountNo;
     private double accountBalance;
     private ArrayList<Transaction> transactions;
+    private ArrayList<Card> cards;
     private long dbID;
 
     public Account (String accountName, String accountNo, double accountBalance) {
         this.accountName = accountName;
         this.accountNo = accountNo;
         this.accountBalance = accountBalance;
+        cards = new ArrayList<>();
         transactions = new ArrayList<>();
     }
 
@@ -43,6 +45,8 @@ public class Account {
     public ArrayList<Transaction> getTransactions() {
         return transactions;
     }
+
+    public ArrayList<Card> getCards() { return cards;}
 
     public void addPaymentTransaction (String payee, double amount) {
         accountBalance -= amount;
