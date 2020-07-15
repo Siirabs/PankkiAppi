@@ -31,6 +31,10 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="account_no">Account no:</string>
+    <string name="str_from_acc_msg">Select Sending Account</string>
+    <string name="str_to_acc_msg">Select Receiving Account</string>
+    <string name="str_transfer_amount">Transfer Amount</string>
+    <string name="str_confirm_transfer">Confirm Transfer</string>
 
     <string-array name="days">
         <item>Sunday</item>

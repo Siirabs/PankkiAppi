@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:textAppearance="@android:style/TextAppearance.Holo.Large"
+        android:textColor="@android:color/background_dark"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/img_transaction"
         app:layout_constraintTop_toTopOf="parent"
@@ -32,6 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:textColor="@android:color/background_dark"
         app:layout_constraintStart_toEndOf="@+id/img_transaction"
         app:layout_constraintTop_toBottomOf="@+id/txt_transaction_type_id"
         tools:text="TRANS_TIMESTAMP" />
@@ -41,6 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:textColor="@android:color/background_dark"
         app:layout_constraintStart_toEndOf="@+id/img_transaction"
         app:layout_constraintTop_toBottomOf="@+id/txt_transaction_timestamp"
         tools:text="TRANS_INFO" />
