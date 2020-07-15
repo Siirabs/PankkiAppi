@@ -169,8 +169,8 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         });
 
         spnAccounts = depositDialog.findViewById(R.id.dep_spn_accounts);
-        accountAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, user.getAccounts());
-        accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        accountAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, user.getAccounts());
+        accountAdapter.setDropDownViewResource(R.layout.spinner_item);
         spnAccounts.setAdapter(accountAdapter);
         spnAccounts.setSelection(0);
 

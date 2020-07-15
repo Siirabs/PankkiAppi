@@ -206,16 +206,16 @@ public class TransactionFragment extends Fragment {
 
     private void setupSpinners() {
 
-        ArrayAdapter<Account> accountAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, user.getAccounts());
-        accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<Account> accountAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, user.getAccounts());
+        accountAdapter.setDropDownViewResource(R.layout.spinner_item);
         spnAccounts.setAdapter(accountAdapter);
 
-        ArrayAdapter<String> transTypeAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.transaction_filters));
-        transTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> transTypeAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, getResources().getStringArray(R.array.transaction_filters));
+        transTypeAdapter.setDropDownViewResource(R.layout.spinner_item);
         spnTransactionTypeFilter.setAdapter(transTypeAdapter);
 
-        ArrayAdapter<String> dateFilterAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.date_filters));
-        dateFilterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> dateFilterAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, getResources().getStringArray(R.array.date_filters));
+        dateFilterAdapter.setDropDownViewResource(R.layout.spinner_item);
         spnDateFilter.setAdapter(dateFilterAdapter);
 
         spnAccounts.setOnItemSelectedListener(spnClickListener);
