@@ -7,4 +7,5 @@
     <color name="colorText">#FFFFFF</color>
     <color name="colorTextHint">#51d8c7</color>
     <color name="black">#51d8c7</color>
+    <color name="drawerHeader">#717171</color>
 </resources>

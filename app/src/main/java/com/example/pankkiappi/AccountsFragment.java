@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -141,6 +142,26 @@ public class AccountsFragment extends Fragment {
         AccountAdapter adapter = new AccountAdapter(this.getActivity(), R.layout.lst_accounts, user.getAccounts());
         lstAccounts.setAdapter(adapter);
 
+        lstAccounts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedAccountIndex = i;
+                viewAccount();
+            }
+        });
+    }
+
+    private void viewAccount() {
+        TransactionFragment transactionsFragment = new TransactionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("SelectedAccount", selectedAccountIndex);
+
+        transactionsFragment.setArguments(bundle);
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, transactionsFragment,"findThisFragment")
+                .addToBackStack(null)
+                .commit();
     }
 
     private void addAccount() {
@@ -181,8 +202,12 @@ public class AccountsFragment extends Fragment {
                 if (!match) {
 
                     DatabaseHelper db = new DatabaseHelper(getActivity().getApplicationContext());
+                    if (allowPayments.isChecked()) {
+                        user.addAccount(edtAccountName.getText().toString(), 0, 1);
+                    } else {
+                        user.addAccount(edtAccountName.getText().toString(), 0, 0);
+                    }
 
-                    user.addAccount(edtAccountName.getText().toString(), 0);
 
                     if (!balance.equals("")) {
                         if (isNum) {

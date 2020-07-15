@@ -54,10 +54,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ACCOUNT_ID = "account_id";
     private static final String COLUMN_ACCOUNT_NAME = "account_name";
     private static final String COLUMN_ACCOUNT_BALANCE = "account_balance";
+   // private static final String COLUMN_ACCOUNT_PAYMENTS_ALLOWED = "payments_allowed";
 
     private static final int ACCOUNT_ID = 1;
     private static final int ACCOUNT_NAME = 2;
     private static final int ACCOUNT_BALANCE = 3;
+    //private static final int ACCOUNT_PAYMENTS_ALLOWED = 4;
 
     // Card Table Columns names
     private static final String COLUMN_CARD_NUMBER = "card_number";
@@ -216,6 +218,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_ACCOUNT_ID, account.getAccountNo());
         values.put(COLUMN_ACCOUNT_NAME, account.getAccountName());
         values.put(COLUMN_ACCOUNT_BALANCE, account.getAccountBalance());
+
+       // if (account.getPayments() == 1) {
+       //     values.put(COLUMN_ACCOUNT_PAYMENTS_ALLOWED, 1);
+       // } else {
+        //    values.put(COLUMN_ACCOUNT_PAYMENTS_ALLOWED, 0);
+       // }
 
         db.insert(TABLE_ACCOUNT, null, values);
         db.close();
@@ -588,6 +596,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String accountNo = cursor.getString(ACCOUNT_ID);
                 String accountName = cursor.getString(ACCOUNT_NAME);
                 double accountBalance = cursor.getDouble(ACCOUNT_BALANCE);
+                //int payments = cursor.getInt(ACCOUNT_PAYMENTS_ALLOWED);
 
                 accounts.add(new Account(accountName, accountNo, accountBalance, id));
             }

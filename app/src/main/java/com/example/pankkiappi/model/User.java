@@ -57,9 +57,9 @@ public class User {
         this.accounts = accounts;
     }
 
-    public void addAccount(String accountName, double accountBalance) {
+    public void addAccount(String accountName, double accountBalance, int payments) {
         String accNo = "A" + (accounts.size() + 1);
-        Account account = new Account(accountName, accNo, accountBalance);
+        Account account = new Account(accountName, accNo, accountBalance, payments);
         accounts.add(account);
     }
 
