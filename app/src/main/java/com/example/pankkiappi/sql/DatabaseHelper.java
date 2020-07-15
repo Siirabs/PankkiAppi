@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.pankkiappi.model.Account;
+import com.example.pankkiappi.model.Card;
 import com.example.pankkiappi.model.Payee;
 import com.example.pankkiappi.model.Transaction;
 import com.example.pankkiappi.model.User;
@@ -59,9 +60,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int ACCOUNT_BALANCE = 3;
 
     // Card Table Columns names
-    private static final String CARD_NUMBER = "card_number";
-    private static final String CVC = "cvc";
-    private static final String LINKED_ACCOUNT = "linked_account";
+    private static final String COLUMN_CARD_NUMBER = "card_number";
+    private static final String COLUMN_CVC = "cvc";
+    private static final String COLUMN_LINKED_ACCOUNT = "linked_account";
+
+    private static final int CARD_NUMBER = 1;
+    private static final int CVC = 2;
+    private static final int LINKED_ACCOUNT = 3;
     // Payee Table Columns names
     private static final String PAYEE_ID = "_PayeeID";
     private static final String PAYEE_NAME = "PayeeName";
@@ -115,9 +120,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + "))";
 
     private static final String CREATE_CARD_TABLE = "CREATE TABLE " + TABLE_CARD + "(" +
-            CARD_NUMBER + " INTEGER PRIMARY KEY, " +
-            LINKED_ACCOUNT + " INTEGER NOT NULL, " +
-            CVC + " INTEGER NOT NULL)";
+            COLUMN_CARD_NUMBER + " INTEGER PRIMARY KEY, " +
+            COLUMN_USER_ID + " INTEGER NOT NULL," +
+            COLUMN_LINKED_ACCOUNT + " INTEGER NOT NULL, " +
+            COLUMN_CVC + " INTEGER NOT NULL)";
 
     // drop table sql query
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
@@ -172,6 +178,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(PAYEES_TABLE);
         db.execSQL(DROP_ACCOUNT_TABLE);
         db.execSQL(TRANSACTIONS_TABLE);
+        db.execSQL(TABLE_CARD);
         // Create tables again
         onCreate(db);
 
@@ -214,19 +221,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void saveNewCard(String cardNumber, String linkedAccount, int cvc) {
+    public void saveNewCard(User user, String cardNumber, String linkedAccount, String cvc) {
         SQLiteDatabase db = this.getWritableDatabase();
 
+
         ContentValues values = new ContentValues();
-        values.put(CARD_NUMBER, cardNumber);
-        values.put(LINKED_ACCOUNT, linkedAccount);
-        values.put(CVC, cvc);
+        values.put(COLUMN_USER_ID, user.getId());
+        values.put(COLUMN_CARD_NUMBER, cardNumber);
+        values.put(COLUMN_LINKED_ACCOUNT, linkedAccount);
+        values.put(COLUMN_CVC, cvc);
 
         db.insert(TABLE_CARD, null, values);
+        db.close();
     }
     public void overwriteAccount(User user, Account account) {
 
-        database = openHelper.getWritableDatabase();
+        database = this.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_USER_ID,user.getId());
@@ -566,6 +576,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return accounts;
     }
+
+
+
     private void getAccountsFromCursor(long userID, ArrayList<Account> accounts, Cursor cursor) {
 
         while (cursor.moveToNext()) {
@@ -581,5 +594,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public ArrayList<Card> getCardsFromCurrentProfile(long user_id) {
+
+        ArrayList<Card> cards = new ArrayList<>();
+        database = this.getReadableDatabase();
+        Cursor cursor = database.query(TABLE_CARD, null, null, null, null, null, null);
+        getCardsFromCursor(user_id, cards, cursor);
+
+        cursor.close();
+        database.close();
+
+        return cards;
+    }
+
+    private void getCardsFromCursor(long userID, ArrayList<Card> cards, Cursor cursor) {
+
+        while (cursor.moveToNext()) {
+
+            if (userID == cursor.getLong(USER_ID)) {
+                long id = cursor.getLong(USER_ID);
+                String card_number = cursor.getString(CARD_NUMBER);
+                String cvc = cursor.getString(CVC);
+                String linked_account = cursor.getString(LINKED_ACCOUNT);
+
+                cards.add(new Card(card_number, cvc, linked_account, id));
+
+            }
+        }
+    }
 
 }

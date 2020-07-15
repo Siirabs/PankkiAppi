@@ -19,7 +19,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.pankkiappi.adapters.AccountAdapter;
+
+import com.example.pankkiappi.adapters.CardsAdapter;
 import com.example.pankkiappi.model.Account;
 import com.example.pankkiappi.model.Card;
 import com.example.pankkiappi.model.User;
@@ -82,7 +83,7 @@ public class CardsFragment extends Fragment {
     }
     private Dialog CardDialog;
 
-    private void displayAccountDialog() {
+    private void displayCardDialog() {
 
         CardDialog = new Dialog(getActivity());
         CardDialog.setContentView(R.layout.card_dialog);
@@ -142,25 +143,45 @@ public class CardsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                displayAccountDialog();
+                displayCardDialog();
             }
         });
 
+
+
+        txtTitleMessage.setText("Select an Account to view Transactions");
+        txtDetailMessage.setVisibility(View.VISIBLE);
+        lstCards.setVisibility(View.VISIBLE);
+
+        ArrayList<Card> cards = new ArrayList<>();
+        for (Account acc : user.getAccounts())  {
+            cards.addAll(acc.getCards());
+        }
+
+        CardsAdapter adapter = new CardsAdapter(this.getActivity(), R.layout.lst_cards, cards );
+        lstCards.setAdapter(adapter);
     }
 
     public void addCard() {
         String account = spinner.getSelectedItem().toString();
         DatabaseHelper db = new DatabaseHelper(getActivity().getApplicationContext());
+
         final SecureRandom random = new SecureRandom();
         int randomNumber = random.nextInt(999999);
+
         String cardNumber = Integer.toString(randomNumber);
 
-        int cvc = random.nextInt(999);
-        db.saveNewCard(cardNumber, account, cvc);
+        final SecureRandom randomm = new SecureRandom();
+        int cvcnumber = randomm.nextInt(999);
+
+        String cvc = Integer.toString(cvcnumber);
+
+
+        db.saveNewCard(user, cardNumber, account, cvc);
         ArrayList<Card> cards = new ArrayList<>();
-        for (Account acc : user.getAccounts())  {
-            cards.addAll(acc.getCards());
-        }
+       // for (Account acc : user.getAccounts())  {
+          //  cards.addAll(acc.getCards());
+       // }
         CardDialog.dismiss();
 
 

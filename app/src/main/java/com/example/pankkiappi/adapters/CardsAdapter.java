@@ -38,7 +38,7 @@ public class CardsAdapter extends ArrayAdapter<Card> {
 
         Card card = getItem(position);
 
-        TextView txtAccountName = convertView.findViewById(R.id.txt_account_name);
+        TextView txtAccountName = convertView.findViewById(R.id.txt_card_no);
         txtAccountName.setText(card.getCardNumber());
 
         TextView txtAccountNo = convertView.findViewById(R.id.txt_acc_no);

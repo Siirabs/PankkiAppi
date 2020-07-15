@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         textInputEditTextPassword = (TextInputEditText) findViewById(R.id.textInputEditTextPassword);
 
         appCompatButtonLogin = (AppCompatButton) findViewById(R.id.appCompatButtonLogin);
-        checkBox = (CheckBox) findViewById(R.id.chk_remember);
+
 
         textViewLinkRegister = (AppCompatTextView) findViewById(R.id.textViewLinkRegister);
 
@@ -97,15 +97,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         appCompatButtonLogin.setOnClickListener(this);
         textViewLinkRegister.setOnClickListener(this);
 
-       // if (checkBox.isChecked()) {
 
-         //   gson = new Gson();
-           // json = userPreferences.getString("LastProfileUsed", "");
-            //lastProfileUsed = gson.fromJson(json, User.class);
-
-            //textInputEditTextEmail.setText(lastProfileUsed.getEmail());
-            //textInputEditTextPassword.setText(lastProfileUsed.getPassword());
-        //}
     }
 
     /**
@@ -117,17 +109,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-   // @Override
-    //public void onStop() {
-      //  if (lastProfileUsed != null) {
-        //    if (textInputEditTextEmail.getText().toString().equals(lastProfileUsed.getEmail()) && textInputEditTextPassword.getText().toString().equals(lastProfileUsed.getPassword())) {
-          //      userPreferences.edit().putBoolean("rememberMe", checkBox.isChecked()).apply();
 
-            ////  userPreferences.edit().putBoolean("rememberMe", false).apply();
-            //}
-        //}
-        //super.onStop();
-    //}
 
     /**
      * This implemented method is to listen the click on view
@@ -181,7 +163,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
                        match = true;
-                        //userPreferences.edit().putBoolean("rememberMe", checkBox.isChecked()).apply();
 
                         lastProfileUsed = users.get(i);
 

@@ -10,18 +10,20 @@ public class Account {
     private double accountBalance;
     private ArrayList<Transaction> transactions;
     private ArrayList<Card> cards;
+    private boolean payments;
     private long dbID;
 
-    public Account (String accountName, String accountNo, double accountBalance) {
+    public Account (String accountName, String accountNo, double accountBalance, boolean payments) {
         this.accountName = accountName;
         this.accountNo = accountNo;
         this.accountBalance = accountBalance;
         cards = new ArrayList<>();
         transactions = new ArrayList<>();
+        this.payments = payments;
     }
 
-    public Account (String accountName, String accountNo, double accountBalance, long dbID) {
-        this(accountName, accountNo, accountBalance);
+    public Account (String accountName, String accountNo, double accountBalance, long dbID, boolean payments) {
+        this(accountName, accountNo, accountBalance, payments);
         this.dbID = dbID;
     }
 
@@ -47,6 +49,10 @@ public class Account {
     }
 
     public ArrayList<Card> getCards() { return cards;}
+
+    public void setCardsFromDB(ArrayList<Card> cards) {
+        this.cards = cards;
+    }
 
     public void addPaymentTransaction (String payee, double amount) {
         accountBalance -= amount;

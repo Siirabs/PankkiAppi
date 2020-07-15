@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class AccountsFragment extends Fragment {
     private Button btnAddAccount;
     private EditText edtAccountName;
     private EditText edtInitAccountBalance;
+    private Switch allowPayments;
 
     private Gson gson;
     private SharedPreferences userPreferences;
@@ -101,6 +103,7 @@ public class AccountsFragment extends Fragment {
 
         btnCancel = accountDialog.findViewById(R.id.btn_cancel_dialog);
         btnAddAccount = accountDialog.findViewById(R.id.btn_add_payee);
+        allowPayments = accountDialog.findViewById(R.id.payments);
 
         btnCancel.setOnClickListener(addAccountClickListener);
         btnAddAccount.setOnClickListener(addAccountClickListener);
@@ -123,6 +126,7 @@ public class AccountsFragment extends Fragment {
                 displayAccountDialog();
             }
         });
+
 
         if (user.getAccounts().size() == 0) {
             txtTitleMessage.setText("Add an Account with the button below");

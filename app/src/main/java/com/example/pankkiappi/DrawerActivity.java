@@ -46,6 +46,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     private Toolbar toolbar;
     private ActionBarDrawerToggle toggle;
     private User user;
+    private Account account;
     private Gson gson;
     private String json;
     private SharedPreferences userPreferences;
@@ -74,6 +75,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         gson = new Gson();
         json = userPreferences.getString("LastProfileUsed", "");
             user = gson.fromJson(json, User.class);
+            account = gson.fromJson(json, Account.class);
 
         loadFromDB();
         SharedPreferences.Editor prefsEditor = userPreferences.edit();
@@ -137,6 +139,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
         //user.setPayeesFromDB(db.getPayeesFromCurrentProfile(user.getId()));
         user.setAccountsFromDB(db.getAccountsFromCurrentProfile(user.getId()));
+        account.setCardsFromDB(db.getCardsFromCurrentProfile(user.getId()));
 
         for (int iAccount = 0; iAccount < user.getAccounts().size(); iAccount++) {
             user.getAccounts().get(iAccount).setTransactions(db.getTransactionsFromCurrentAccount(user.getId(), user.getAccounts().get(iAccount).getAccountNo()));
@@ -231,8 +234,8 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
             Toast.makeText(this, "Deposit of $" + String.format(Locale.getDefault(), "%.2f",depositAmount) + " " + "made successfully", Toast.LENGTH_SHORT).show();
 
-            accountAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, user.getAccounts());
-            accountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            accountAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, user.getAccounts());
+            accountAdapter.setDropDownViewResource(R.layout.spinner_item);
             spnAccounts.setAdapter(accountAdapter);
 
             //TODO: Add checkbox if the user wants to make more than one deposit
