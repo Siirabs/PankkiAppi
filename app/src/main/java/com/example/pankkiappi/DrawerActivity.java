@@ -139,8 +139,8 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
         //user.setPayeesFromDB(db.getPayeesFromCurrentProfile(user.getId()));
         user.setAccountsFromDB(db.getAccountsFromCurrentProfile(user.getId()));
-        account.setCardsFromDB(db.getCardsFromCurrentProfile(user.getId()));
 
+        //user.getAccounts(account.setCardsFromDB(db.getCardsFromCurrentProfile(user.getId())));
         for (int iAccount = 0; iAccount < user.getAccounts().size(); iAccount++) {
             user.getAccounts().get(iAccount).setTransactions(db.getTransactionsFromCurrentAccount(user.getId(), user.getAccounts().get(iAccount).getAccountNo()));
         }

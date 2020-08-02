@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ public class CardsFragment extends Fragment {
     private Gson gson;
     private SharedPreferences userPreferences;
     private User user;
+    private Account account;
 
     private View.OnClickListener addCardClickListener = new View.OnClickListener() {
         @Override
@@ -138,6 +140,8 @@ public class CardsFragment extends Fragment {
         String json = userPreferences.getString("LastProfileUsed", "");
         user = gson.fromJson(json, User.class);
 
+        DatabaseHelper db = new DatabaseHelper(getActivity());
+        db.getCardsFromCurrentProfile(user.getId());
 
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -154,8 +158,11 @@ public class CardsFragment extends Fragment {
         lstCards.setVisibility(View.VISIBLE);
 
         ArrayList<Card> cards = new ArrayList<>();
-        for (Account acc : user.getAccounts())  {
-            cards.addAll(acc.getCards());
+
+        //DatabaseHelper db = new DatabaseHelper(getActivity().getApplicationContext());
+        //db.getCardsFromCurrentProfile();
+        for (Account account : user.getAccounts())  {
+            cards.addAll(account.getCards());
         }
 
         CardsAdapter adapter = new CardsAdapter(this.getActivity(), R.layout.lst_cards, cards );
@@ -177,12 +184,19 @@ public class CardsFragment extends Fragment {
         String cvc = Integer.toString(cvcnumber);
 
 
-        db.saveNewCard(user, cardNumber, account, cvc);
+        db.saveNewCard(user, cardNumber, user.getAccounts().get(user.getAccounts().size()-1), cvc);
         ArrayList<Card> cards = new ArrayList<>();
-       // for (Account acc : user.getAccounts())  {
-          //  cards.addAll(acc.getCards());
-       // }
+        for (Account acc : user.getAccounts())  {
+           cards.addAll(acc.getCards());
+        }
+
+        SharedPreferences.Editor prefsEditor = userPreferences.edit();
+        String json = gson.toJson(user);
+        prefsEditor.putString("LastProfileUsed", json).apply();
+
         CardDialog.dismiss();
+
+        db.close();
 
 
 

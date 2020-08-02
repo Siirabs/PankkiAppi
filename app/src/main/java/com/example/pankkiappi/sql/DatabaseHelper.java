@@ -122,9 +122,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + "))";
 
     private static final String CREATE_CARD_TABLE = "CREATE TABLE " + TABLE_CARD + "(" +
-            COLUMN_CARD_NUMBER + " INTEGER PRIMARY KEY, " +
-            COLUMN_USER_ID + " INTEGER NOT NULL," +
-            COLUMN_LINKED_ACCOUNT + " INTEGER NOT NULL, " +
+            COLUMN_USER_ID + " INTEGER NOT NULL , " +
+            COLUMN_ACCOUNT_ID + " TEXT NOT NULL," +
+            COLUMN_CARD_NUMBER + " INTEGER NOT NULL, " +
             COLUMN_CVC + " INTEGER NOT NULL)";
 
     // drop table sql query
@@ -229,14 +229,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void saveNewCard(User user, String cardNumber, String linkedAccount, String cvc) {
+    public void saveNewCard(User user, String cardNumber, Account account, String cvc) {
         SQLiteDatabase db = this.getWritableDatabase();
 
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_ID, user.getId());
+        values.put(COLUMN_ACCOUNT_ID, account.getAccountNo());
         values.put(COLUMN_CARD_NUMBER, cardNumber);
-        values.put(COLUMN_LINKED_ACCOUNT, linkedAccount);
         values.put(COLUMN_CVC, cvc);
 
         db.insert(TABLE_CARD, null, values);
@@ -608,6 +608,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<Card> cards = new ArrayList<>();
         database = this.getReadableDatabase();
         Cursor cursor = database.query(TABLE_CARD, null, null, null, null, null, null);
+
+
         getCardsFromCursor(user_id, cards, cursor);
 
         cursor.close();
@@ -616,17 +618,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cards;
     }
 
-    private void getCardsFromCursor(long userID, ArrayList<Card> cards, Cursor cursor) {
+    private void getCardsFromCursor(long user_id, ArrayList<Card> cards, Cursor cursor) {
 
         while (cursor.moveToNext()) {
-
-            if (userID == cursor.getLong(USER_ID)) {
-                long id = cursor.getLong(USER_ID);
+            System.out.println(user_id);
+            System.out.println(cursor.getInt(USER_ID));
+            if (user_id == cursor.getInt(0)) {
+                long id = cursor.getLong(0);
+                System.out.println(id);
+                String account_id = cursor.getString(ACCOUNT_ID);
+                System.out.println(account_id);
                 String card_number = cursor.getString(CARD_NUMBER);
+                System.out.println(card_number);
                 String cvc = cursor.getString(CVC);
-                String linked_account = cursor.getString(LINKED_ACCOUNT);
+                System.out.println(cvc);
 
-                cards.add(new Card(card_number, cvc, linked_account, id));
+
+                cards.add(new Card(card_number, cvc, account_id, id));
 
             }
         }
