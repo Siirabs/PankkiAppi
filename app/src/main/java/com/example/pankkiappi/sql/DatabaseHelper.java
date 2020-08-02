@@ -229,7 +229,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void saveNewCard(User user, String cardNumber, Account account, String cvc) {
+    public void saveNewCard(User user, Account account, String cardNumber,  String cvc) {
         SQLiteDatabase db = this.getWritableDatabase();
 
 
@@ -621,11 +621,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private void getCardsFromCursor(long user_id, ArrayList<Card> cards, Cursor cursor) {
 
         while (cursor.moveToNext()) {
-            System.out.println(user_id);
-            System.out.println(cursor.getInt(USER_ID));
+            //System.out.println(user_id);
+           // System.out.println(cursor.getInt(USER_ID));
             if (user_id == cursor.getInt(0)) {
                 long id = cursor.getLong(0);
-                System.out.println(id);
+                System.out.println(user_id);
                 String account_id = cursor.getString(ACCOUNT_ID);
                 System.out.println(account_id);
                 String card_number = cursor.getString(CARD_NUMBER);

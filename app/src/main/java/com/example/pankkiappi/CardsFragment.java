@@ -184,7 +184,7 @@ public class CardsFragment extends Fragment {
         String cvc = Integer.toString(cvcnumber);
 
 
-        db.saveNewCard(user, cardNumber, user.getAccounts().get(user.getAccounts().size()-1), cvc);
+        db.saveNewCard(user, user.getAccounts().get(user.getAccounts().size()-1), cardNumber,  cvc);
         ArrayList<Card> cards = new ArrayList<>();
         for (Account acc : user.getAccounts())  {
            cards.addAll(acc.getCards());
