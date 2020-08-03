@@ -7,7 +7,7 @@ public class Card {
     private String accountNo;
     private long dbID;
 
-    public Card(String cardNumber, String cvc, String accountNo, long dbID) {
+    public Card(long dbID, String accountNo, String cardNumber, String cvc) {
         this.dbID = dbID;
         this.accountNo = accountNo;
         this.cardNumber = cardNumber;

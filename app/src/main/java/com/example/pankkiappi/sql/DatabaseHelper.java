@@ -591,8 +591,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         while (cursor.moveToNext()) {
 
-            if (userID == cursor.getLong(0)) {
-                long id = cursor.getLong(0);
+            if (userID == cursor.getLong(USER_ID)) {
+                long id = cursor.getLong(USER_ID);
+
                 String accountNo = cursor.getString(ACCOUNT_ID);
                 String accountName = cursor.getString(ACCOUNT_NAME);
                 double accountBalance = cursor.getDouble(ACCOUNT_BALANCE);
@@ -607,34 +608,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ArrayList<Card> cards = new ArrayList<>();
         database = this.getReadableDatabase();
-        Cursor cursor = database.query(TABLE_CARD, null, null, null, null, null, null);
+        Cursor cursor2 = database.query(TABLE_CARD, null, null, null, null, null, null);
 
 
-        getCardsFromCursor(user_id, cards, cursor);
+        getCardsFromCursor(user_id, cards, cursor2);
 
-        cursor.close();
+        cursor2.close();
         database.close();
 
         return cards;
     }
 
-    private void getCardsFromCursor(long user_id, ArrayList<Card> cards, Cursor cursor) {
+    private void getCardsFromCursor(long userID, ArrayList<Card> cards, Cursor cursor) {
 
         while (cursor.moveToNext()) {
-            //System.out.println(user_id);
-           // System.out.println(cursor.getInt(USER_ID));
-            if (user_id == cursor.getInt(0)) {
-                long id = cursor.getLong(0);
-                System.out.println(USER_ID);
+            System.out.println(userID);
+           // System.out.println(cursor.getLong(USER_ID));
+            if (userID == cursor.getLong(USER_ID)) {
+                long id = cursor.getLong(USER_ID);
+                System.out.println(cursor.getLong(USER_ID));
                 String account_id = cursor.getString(ACCOUNT_ID);
-                System.out.println(account_id);
+                System.out.println(cursor.getString(ACCOUNT_ID));
                 String card_number = cursor.getString(CARD_NUMBER);
-                System.out.println(card_number);
+                System.out.println(cursor.getString(CARD_NUMBER));
                 String cvc = cursor.getString(CVC);
-                System.out.println(cvc);
+                System.out.println(cursor.getString(CVC));
 
 
-                cards.add(new Card(card_number, cvc, account_id, id));
+                cards.add(new Card(id, account_id, card_number, cvc));
 
             }
         }

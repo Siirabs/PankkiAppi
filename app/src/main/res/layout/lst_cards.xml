@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:textAppearance="@android:style/TextAppearance.Holo.Large"
-        app:layout_constraintStart_toEndOf="@+id/img_account"
+        app:layout_constraintStart_toEndOf="@+id/ic_card"
         android:textColor="@android:color/holo_green_dark"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="CARD" />
@@ -25,7 +25,7 @@
         android:layout_marginStart="8dp"
         android:textAppearance="@android:style/TextAppearance.Holo.Medium"
         android:textColor="@android:color/holo_green_dark"
-        app:layout_constraintStart_toEndOf="@+id/img_account"
+        app:layout_constraintStart_toEndOf="@+id/ic_card"
         app:layout_constraintTop_toBottomOf="@+id/txt_cvc"
         tools:text="CARD NO:  " />
 
@@ -37,17 +37,17 @@
         android:textAppearance="@android:style/TextAppearance.Holo.Medium"
         android:textColor="@android:color/holo_green_dark"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/img_account"
+        app:layout_constraintStart_toEndOf="@+id/ic_card"
         app:layout_constraintTop_toBottomOf="@+id/txt_card"
         tools:text="ACCOUNT: " />
 
     <ImageView
-        android:id="@+id/img_account"
+        android:id="@+id/ic_card"
         android:layout_width="58dp"
         android:layout_height="55dp"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/lst_acc"
+        app:srcCompat="@drawable/ic_card"
         android:contentDescription="Account Image" />
 </androidx.constraintlayout.widget.ConstraintLayout>
