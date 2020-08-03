@@ -81,5 +81,11 @@ public class SettingsFragment extends Fragment {
 
         db.updateUser(user);
         db.close();
+        SharedPreferences.Editor prefsEditor = userPreferences.edit();
+        String json = gson.toJson(user);
+        prefsEditor.putString("LastProfileUsed", json).apply();
+        setInfo();
+        Toast toast = Toast.makeText(getContext(), "Settings Saved", Toast.LENGTH_SHORT);
+        toast.show();
     }
 }
