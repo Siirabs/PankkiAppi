@@ -591,8 +591,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         while (cursor.moveToNext()) {
 
-            if (userID == cursor.getLong(USER_ID)) {
-                long id = cursor.getLong(USER_ID);
+            if (userID == cursor.getLong(0)) {
+                long id = cursor.getLong(0);
                 String accountNo = cursor.getString(ACCOUNT_ID);
                 String accountName = cursor.getString(ACCOUNT_NAME);
                 double accountBalance = cursor.getDouble(ACCOUNT_BALANCE);
@@ -625,7 +625,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
            // System.out.println(cursor.getInt(USER_ID));
             if (user_id == cursor.getInt(0)) {
                 long id = cursor.getLong(0);
-                System.out.println(user_id);
+                System.out.println(USER_ID);
                 String account_id = cursor.getString(ACCOUNT_ID);
                 System.out.println(account_id);
                 String card_number = cursor.getString(CARD_NUMBER);
