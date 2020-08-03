@@ -139,9 +139,13 @@ public class CardsFragment extends Fragment {
         gson = new Gson();
         String json = userPreferences.getString("LastProfileUsed", "");
         user = gson.fromJson(json, User.class);
+        account = gson.fromJson(json, Account.class);
 
-        DatabaseHelper db = new DatabaseHelper(getActivity());
-        db.getCardsFromCurrentProfile(user.getId());
+        DatabaseHelper db = new DatabaseHelper(getActivity().getApplicationContext());
+        this.account.setCardsFromDB(db.getCardsFromCurrentProfile(user.getId()));
+        ArrayList<Card> cards = this.account.getCards();
+        CardsAdapter adapter = new CardsAdapter(this.getActivity(), R.layout.lst_cards, cards );
+        lstCards.setAdapter(adapter);
 
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -157,16 +161,7 @@ public class CardsFragment extends Fragment {
         txtDetailMessage.setVisibility(View.VISIBLE);
         lstCards.setVisibility(View.VISIBLE);
 
-        ArrayList<Card> cards = new ArrayList<>();
 
-        //DatabaseHelper db = new DatabaseHelper(getActivity().getApplicationContext());
-        //db.getCardsFromCurrentProfile();
-        for (Account account : user.getAccounts())  {
-            cards.addAll(account.getCards());
-        }
-
-        CardsAdapter adapter = new CardsAdapter(this.getActivity(), R.layout.lst_cards, cards );
-        lstCards.setAdapter(adapter);
     }
 
     public void addCard() {
@@ -185,11 +180,14 @@ public class CardsFragment extends Fragment {
 
 
         db.saveNewCard(user, user.getAccounts().get(user.getAccounts().size()-1), cardNumber,  cvc);
-        ArrayList<Card> cards = new ArrayList<>();
-        for (Account acc : user.getAccounts())  {
-           cards.addAll(acc.getCards());
-        }
-
+       // ArrayList<Card> cards = new ArrayList<>();
+       // for (Account acc : user.getAccounts())  {
+        //   cards.addAll(acc.getCards());
+       // }
+        this.account.setCardsFromDB(db.getCardsFromCurrentProfile(user.getId()));
+        ArrayList<Card> cards = this.account.getCards();
+        CardsAdapter adapter = new CardsAdapter(this.getActivity(), R.layout.lst_cards, cards );
+        lstCards.setAdapter(adapter);
         SharedPreferences.Editor prefsEditor = userPreferences.edit();
         String json = gson.toJson(user);
         prefsEditor.putString("LastProfileUsed", json).apply();

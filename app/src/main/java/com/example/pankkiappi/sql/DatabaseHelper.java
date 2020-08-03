@@ -64,11 +64,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Card Table Columns names
     private static final String COLUMN_CARD_NUMBER = "card_number";
     private static final String COLUMN_CVC = "cvc";
-    private static final String COLUMN_LINKED_ACCOUNT = "linked_account";
+   // private static final String COLUMN_LINKED_ACCOUNT = "linked_account";
 
     private static final int CARD_NUMBER = 1;
     private static final int CVC = 2;
-    private static final int LINKED_ACCOUNT = 3;
+   // private static final int LINKED_ACCOUNT = 3;
     // Payee Table Columns names
     private static final String PAYEE_ID = "_PayeeID";
     private static final String PAYEE_NAME = "PayeeName";

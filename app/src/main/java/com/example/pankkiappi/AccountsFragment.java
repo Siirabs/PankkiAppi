@@ -235,7 +235,9 @@ public class AccountsFragment extends Fragment {
 
                     SharedPreferences.Editor prefsEditor = userPreferences.edit();
                     String json = gson.toJson(user);
+                    String json2 = gson.toJson(account);
                     prefsEditor.putString("LastProfileUsed", json).apply();
+                    prefsEditor.putString("Account", json2).apply();
 
                     accountDialog.dismiss();
 

@@ -26,11 +26,11 @@
         android:textAppearance="@android:style/TextAppearance.Holo.Medium"
         android:textColor="@android:color/holo_green_dark"
         app:layout_constraintStart_toEndOf="@+id/img_account"
-        app:layout_constraintTop_toBottomOf="@+id/txt_account"
+        app:layout_constraintTop_toBottomOf="@+id/txt_cvc"
         tools:text="CARD NO:  " />
 
     <TextView
-        android:id="@+id/txt_account"
+        android:id="@+id/txt_cvc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

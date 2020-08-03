@@ -1,5 +1,6 @@
 package com.example.pankkiappi;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -75,6 +76,8 @@ public class TransferFragment extends Fragment {
         gson = new Gson();
         json = userPreferences.getString("LastProfileUsed", "");
         user = gson.fromJson(json, User.class);
+
+
 
         btnConfirmTransfer.setOnClickListener(new View.OnClickListener() {
             @Override

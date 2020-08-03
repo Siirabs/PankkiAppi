@@ -38,14 +38,14 @@ public class CardsAdapter extends ArrayAdapter<Card> {
 
         Card card = getItem(position);
 
-        TextView txtAccountName = convertView.findViewById(R.id.txt_card_no);
-        txtAccountName.setText(card.getCardNumber());
+        TextView txtCardNo = convertView.findViewById(R.id.txt_card_no);
+        txtCardNo.setText(card.getCardNumber());
 
-        TextView txtAccountNo = convertView.findViewById(R.id.txt_acc_no);
-        //txtAccountNo.setText(context.getString(R.string.account_no) + " " + account.getAccountNo());
+        TextView txtAccNo = convertView.findViewById(R.id.txt_acc_no);
+       // txtAccNo.setText(card.getCardNumber());
 
-        TextView txtAccountBalance = convertView.findViewById(R.id.txt_balance);
-        //txtAccountBalance.setText("Account balance: $" + String.format("%.2f",account.getAccountBalance()));
+        TextView txtCvc = convertView.findViewById(R.id.txt_cvc);
+        //txtCvc.setText(card.getCardNumber());
 
         return convertView;
     }

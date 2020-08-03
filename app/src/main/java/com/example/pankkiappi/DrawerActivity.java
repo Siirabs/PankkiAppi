@@ -112,9 +112,20 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
                 break;
             case R.id.nav_transfer:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new TransferFragment()).commit();
-                break;
+                userPreferences = this.getSharedPreferences("LastProfileUsed", MODE_PRIVATE);
+                gson = new Gson();
+                json = userPreferences.getString("LastProfileUsed", "");
+                user = gson.fromJson(json, User.class);
+                if (user.getAccounts().size() < 2){
+                    Toast toast = Toast.makeText(this, "You need to have at least two accounts", Toast.LENGTH_SHORT);
+                    toast.show();
+
+                }
+                else {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new TransferFragment()).commit();
+                    break;
+                }
             case R.id.nav_payment:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new PaymentFragment()).commit();
@@ -141,8 +152,9 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
         //user.setPayeesFromDB(db.getPayeesFromCurrentProfile(user.getId()));
         user.setAccountsFromDB(db.getAccountsFromCurrentProfile(user.getId()));
+        account.setCardsFromDB(db.getCardsFromCurrentProfile(user.getId()));
 
-        //user.getAccounts(account.setCardsFromDB(db.getCardsFromCurrentProfile(user.getId())));
+
         for (int iAccount = 0; iAccount < user.getAccounts().size(); iAccount++) {
             user.getAccounts().get(iAccount).setTransactions(db.getTransactionsFromCurrentAccount(user.getId(), user.getAccounts().get(iAccount).getAccountNo()));
         }

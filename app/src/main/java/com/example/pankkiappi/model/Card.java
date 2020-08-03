@@ -4,17 +4,19 @@ public class Card {
 
     private String cardNumber;
     private String cvc;
-    private String linkedAccount;
+    private String accountNo;
     private long dbID;
 
-    public Card(String cardNumber, String cvc, String linkedAccount, long dbID) {
+    public Card(String cardNumber, String cvc, String accountNo, long dbID) {
+        this.dbID = dbID;
+        this.accountNo = accountNo;
         this.cardNumber = cardNumber;
         this.cvc = cvc;
-        this.linkedAccount = linkedAccount;
-        this.dbID = dbID;
     }
 
     public String getCardNumber() { return cardNumber;}
 
     public String getCvc() {return cvc;}
+
+    public String getAccountNo() {return accountNo;}
 }
