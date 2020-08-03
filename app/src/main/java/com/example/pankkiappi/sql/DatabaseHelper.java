@@ -124,8 +124,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_CARD_TABLE = "CREATE TABLE " + TABLE_CARD + "(" +
             COLUMN_USER_ID + " INTEGER NOT NULL , " +
             COLUMN_ACCOUNT_ID + " TEXT NOT NULL," +
-            COLUMN_CARD_NUMBER + " INTEGER NOT NULL, " +
-            COLUMN_CVC + " INTEGER NOT NULL)";
+            COLUMN_CARD_NUMBER + " TEXT NOT NULL, " +
+            COLUMN_CVC + " TEXT NOT NULL)";
 
     // drop table sql query
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
@@ -623,7 +623,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         while (cursor.moveToNext()) {
             System.out.println(userID);
-           // System.out.println(cursor.getLong(USER_ID));
+
             if (userID == cursor.getLong(USER_ID)) {
                 long id = cursor.getLong(USER_ID);
                 System.out.println(cursor.getLong(USER_ID));

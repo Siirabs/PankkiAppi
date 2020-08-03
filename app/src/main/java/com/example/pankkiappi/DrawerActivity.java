@@ -119,6 +119,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                 if (user.getAccounts().size() < 2){
                     Toast toast = Toast.makeText(this, "You need to have at least two accounts", Toast.LENGTH_SHORT);
                     toast.show();
+                    break;
 
                 }
                 else {

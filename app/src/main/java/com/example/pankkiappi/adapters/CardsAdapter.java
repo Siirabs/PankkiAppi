@@ -36,16 +36,18 @@ public class CardsAdapter extends ArrayAdapter<Card> {
             convertView = inflater.inflate(resource, parent, false);
         }
 
-        Card card = getItem(position);
 
+        Card card = getItem(position);
+        String Muna = card.getCvc();
+        String Kissa = card.getAccountNo();
         TextView txtCardNo = convertView.findViewById(R.id.txt_card_no);
-        txtCardNo.setText(card.getCardNumber());
+        txtCardNo.setText(Muna);
 
         TextView txtAccNo = convertView.findViewById(R.id.txt_acc_no);
-       // txtAccNo.setText(card.getCardNumber());
+        txtAccNo.setText(Kissa);
 
-        TextView txtCvc = convertView.findViewById(R.id.txt_cvc);
-        //txtCvc.setText(card.getCardNumber());
+        TextView txtCvc = convertView.findViewById(R.id.txt_card);
+        txtCvc.setText("CARD");
 
         return convertView;
     }
