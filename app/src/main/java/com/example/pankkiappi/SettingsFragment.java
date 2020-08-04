@@ -72,6 +72,7 @@ public class SettingsFragment extends Fragment {
         String upCode = postalCode.getText().toString();
         String upAddress = address.getText().toString();
 
+        //Sets info
         user.setName(upName);
         user.setCity(upCity);
         user.setPostalCode(upCode);
@@ -79,10 +80,12 @@ public class SettingsFragment extends Fragment {
 
         DatabaseHelper db = new DatabaseHelper(getActivity().getApplicationContext());
 
+        //Updates info to database
         db.updateUser(user);
         db.close();
         SharedPreferences.Editor prefsEditor = userPreferences.edit();
         String json = gson.toJson(user);
+        //Reloads info on fragment change
         prefsEditor.putString("LastProfileUsed", json).apply();
         setInfo();
         Toast toast = Toast.makeText(getContext(), "Settings Saved", Toast.LENGTH_SHORT);
