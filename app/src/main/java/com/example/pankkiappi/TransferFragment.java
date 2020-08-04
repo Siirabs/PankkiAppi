@@ -135,7 +135,7 @@ public class TransferFragment extends Fragment {
                 Account sendingAccount = (Account) spnSendingAccount.getItemAtPosition(sendingAccIndex);
                 Account receivingAccount = (Account) spnReceivingAccount.getItemAtPosition(receivingAccIndex);
                 if (sendingAccount.isPaymentsAllowed() == false){
-                    Toast toast = Toast.makeText(getContext(), "This account is now allowed to make transfers.", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getContext(), "This account is not allowed to make transfers.", Toast.LENGTH_SHORT);
                     toast.show();
 
                 }
