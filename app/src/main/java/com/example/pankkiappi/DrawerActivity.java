@@ -108,9 +108,19 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                         new CardsFragment()).commit();
                 break;
             case R.id.nav_deposit:
-                displayDepositDialog();
-
-                break;
+                userPreferences = this.getSharedPreferences("LastProfileUsed", MODE_PRIVATE);
+                gson = new Gson();
+                json = userPreferences.getString("LastProfileUsed", "");
+                user = gson.fromJson(json, User.class);
+                if (user.getAccounts().size() < 1){
+                    Toast toast = Toast.makeText(this, "You need to have atleast one account", Toast.LENGTH_SHORT);
+                    toast.show();
+                    break;
+                }
+                else {
+                    displayDepositDialog();
+                    break;
+                }
             case R.id.nav_transfer:
                 userPreferences = this.getSharedPreferences("LastProfileUsed", MODE_PRIVATE);
                 gson = new Gson();

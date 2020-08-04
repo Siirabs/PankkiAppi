@@ -619,20 +619,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cards;
     }
 
-    private void getCardsFromCursor(long userID, ArrayList<Card> cards, Cursor cursor) {
+    private void getCardsFromCursor(long userID, ArrayList<Card> cards, Cursor cursor2) {
 
-        while (cursor.moveToNext()) {
+        while (cursor2.moveToNext()) {
             System.out.println(userID);
 
-            if (userID == cursor.getLong(USER_ID)) {
-                long id = cursor.getLong(USER_ID);
-                System.out.println(cursor.getLong(USER_ID));
-                String account_id = cursor.getString(ACCOUNT_ID);
-                System.out.println(cursor.getString(ACCOUNT_ID));
-                String card_number = cursor.getString(CARD_NUMBER);
-                System.out.println(cursor.getString(CARD_NUMBER));
-                String cvc = cursor.getString(CVC);
-                System.out.println(cursor.getString(CVC));
+            if (userID == cursor2.getLong(USER_ID)) {
+                long id = cursor2.getLong(USER_ID);
+                System.out.println(cursor2.getLong(USER_ID));
+                String account_id = cursor2.getString(ACCOUNT_ID);
+                System.out.println(cursor2.getString(ACCOUNT_ID));
+                String card_number = cursor2.getString(CARD_NUMBER);
+                System.out.println(cursor2.getString(CARD_NUMBER));
+                String cvc = cursor2.getString(CVC);
+                System.out.println(cursor2.getString(CVC));
 
 
                 cards.add(new Card(id, account_id, card_number, cvc));
