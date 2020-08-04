@@ -27,9 +27,7 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <activity
-            android:name=".activities.UsersListActivity"
-            android:screenOrientation="portrait" />
+
 
     </application>
 

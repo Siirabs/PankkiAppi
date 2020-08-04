@@ -6,18 +6,14 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -25,9 +21,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import com.example.pankkiappi.activities.RegisterActivity;
+
 import com.example.pankkiappi.activities.LoginActivity;
-import com.example.pankkiappi.activities.UsersListActivity;
 import com.example.pankkiappi.model.User;
 import com.example.pankkiappi.model.Account;
 import com.example.pankkiappi.sql.DatabaseHelper;
@@ -137,10 +132,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                             new TransferFragment()).commit();
                     break;
                 }
-            case R.id.nav_payment:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new PaymentFragment()).commit();
-                break;
 
             case R.id.nav_settings:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -161,7 +152,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     private void loadFromDB() {
         DatabaseHelper db = new DatabaseHelper(getApplicationContext());
 
-        //user.setPayeesFromDB(db.getPayeesFromCurrentProfile(user.getId()));
+
         user.setAccountsFromDB(db.getAccountsFromCurrentProfile(user.getId()));
         account.setCardsFromDB(db.getCardsFromCurrentProfile(user.getId()));
 
@@ -257,7 +248,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
             Db.saveNewTransaction(user, account.getAccountNo(),
                     account.getTransactions().get(account.getTransactions().size()-1));
 
-            Toast.makeText(this, "Deposit of $" + String.format(Locale.getDefault(), "%.2f",depositAmount) + " " + "made successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Deposit of €" + String.format(Locale.getDefault(), "%.2f",depositAmount) + " " + "made successfully", Toast.LENGTH_SHORT).show();
 
             accountAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, user.getAccounts());
             accountAdapter.setDropDownViewResource(R.layout.spinner_item);

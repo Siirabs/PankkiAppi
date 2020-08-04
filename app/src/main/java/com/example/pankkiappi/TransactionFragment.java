@@ -35,9 +35,8 @@ public class TransactionFragment extends Fragment {
 
     public enum TransactionTypeFilter {
         ALL_TRANSACTIONS(0),
-        PAYMENTS(1),
-        TRANSFERS(2),
-        DEPOSITS(3);
+        TRANSFERS(1),
+        DEPOSITS(2);
 
         private final int transFilterID;
         TransactionTypeFilter(int transFilterID) {
@@ -103,7 +102,7 @@ public class TransactionFragment extends Fragment {
 
     private TextView txtTransactionMsg;
     private TextView txtTransfersMsg;
-    private TextView txtPaymentsMsg;
+
     private TextView txtDepositMsg;
 
     private Spinner spnAccounts;
@@ -119,7 +118,7 @@ public class TransactionFragment extends Fragment {
             if (adapterView.getId() == spnAccounts.getId()) {
                 selectedAccountIndex = i;
                 txtAccountName.setText("Account: " + user.getAccounts().get(selectedAccountIndex).toTransactionString());
-                txtAccountBalance.setText("Balance: $" + String.format(Locale.getDefault(), "%.2f",user.getAccounts().get(selectedAccountIndex).getAccountBalance()));
+                txtAccountBalance.setText("Balance: €" + String.format(Locale.getDefault(), "%.2f",user.getAccounts().get(selectedAccountIndex).getAccountBalance()));
             }
             else if (adapterView.getId() == spnTransactionTypeFilter.getId()) {
                 transFilter = transFilter.getTransFilter(i);
@@ -144,7 +143,6 @@ public class TransactionFragment extends Fragment {
     private int selectedAccountIndex;
 
     public TransactionFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -166,7 +164,7 @@ public class TransactionFragment extends Fragment {
         txtAccountBalance = rootView.findViewById(R.id.txt_account_balance);
 
         txtTransactionMsg = rootView.findViewById(R.id.txt_no_transactions);
-        txtPaymentsMsg = rootView.findViewById(R.id.txt_no_payments);
+
         txtTransfersMsg = rootView.findViewById(R.id.txt_no_transfers);
         txtDepositMsg = rootView.findViewById(R.id.txt_no_deposits);
 
@@ -176,7 +174,6 @@ public class TransactionFragment extends Fragment {
 
         lstTransactions = rootView.findViewById(R.id.lst_transactions);
 
-        //((DrawerActivity) getActivity()).showUpButton();
 
         setValues();
         return rootView;
@@ -201,7 +198,7 @@ public class TransactionFragment extends Fragment {
         spnAccounts.setSelection(selectedAccountIndex);
 
         txtAccountName.setText("Account: " + user.getAccounts().get(selectedAccountIndex).toTransactionString());
-        txtAccountBalance.setText("Balance: $" + String.format(Locale.getDefault(), "%.2f",user.getAccounts().get(selectedAccountIndex).getAccountBalance()));
+        txtAccountBalance.setText("Balance: €" + String.format(Locale.getDefault(), "%.2f",user.getAccounts().get(selectedAccountIndex).getAccountBalance()));
     }
 
     private void setupSpinners() {
@@ -232,7 +229,7 @@ public class TransactionFragment extends Fragment {
 
         txtDepositMsg.setVisibility(GONE);
         txtTransfersMsg.setVisibility(GONE);
-        txtPaymentsMsg.setVisibility(GONE);
+
 
         if (transactions.size() > 0) {
 
@@ -249,9 +246,6 @@ public class TransactionFragment extends Fragment {
                 TransactionAdapter transactionAdapter = new TransactionAdapter(getActivity(), R.layout.lst_transactions, transactions);
                 lstTransactions.setAdapter(transactionAdapter);
             }
-            else if (transFilter == TransactionTypeFilter.PAYMENTS) {
-                displayPayments(transactions);
-            }
             else if (transFilter == TransactionTypeFilter.TRANSFERS) {
                 displayTransfers(transactions);
             }
@@ -266,23 +260,7 @@ public class TransactionFragment extends Fragment {
 
     }
 
-    private void displayPayments(ArrayList<Transaction> transactions) {
-        ArrayList<Transaction> payments = new ArrayList<>();
 
-        for (int i = 0; i < transactions.size(); i++) {
-            if (transactions.get(i).getTransactionType() == Transaction.TRANSACTION_TYPE.PAYMENT) {
-                payments.add(transactions.get(i));
-            }
-        }
-        if (payments.size() == 0) {
-            txtPaymentsMsg.setVisibility(VISIBLE);
-            lstTransactions.setVisibility(GONE);
-        } else {
-            lstTransactions.setVisibility(VISIBLE);
-            TransactionAdapter transactionAdapter = new TransactionAdapter(getActivity(), R.layout.lst_transactions, payments);
-            lstTransactions.setAdapter(transactionAdapter);
-        }
-    }
 
     private void displayTransfers(ArrayList<Transaction> transactions) {
         ArrayList<Transaction> transfers = new ArrayList<>();

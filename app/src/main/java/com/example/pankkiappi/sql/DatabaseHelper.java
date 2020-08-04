@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Switch;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -22,18 +23,17 @@ import com.example.pankkiappi.model.User;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private SQLiteDatabase database;
-    private SQLiteOpenHelper openHelper;
+
     // Database Version
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "UserManager.db";
+    private static final String DATABASE_NAME = "Projuu.db";
 
     // User table name
     private static final String TABLE_USER = "user";
     private static final String TABLE_ACCOUNT = "account";
     private static final String TABLE_CARD = "card";
-    private static final String PAYEES_TABLE = "Payees";
     private static final String TRANSACTIONS_TABLE = "Transactions";
 
     // User Table Columns names
@@ -54,27 +54,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ACCOUNT_ID = "account_id";
     private static final String COLUMN_ACCOUNT_NAME = "account_name";
     private static final String COLUMN_ACCOUNT_BALANCE = "account_balance";
-   // private static final String COLUMN_ACCOUNT_PAYMENTS_ALLOWED = "payments_allowed";
+    private static final String COLUMN_PAYMENTS_ALLOWED = "payments_allowed";
 
     private static final int ACCOUNT_ID = 1;
     private static final int ACCOUNT_NAME = 2;
     private static final int ACCOUNT_BALANCE = 3;
+    private static final int PAYMENTS_ALLOWED = 4;
     //private static final int ACCOUNT_PAYMENTS_ALLOWED = 4;
 
     // Card Table Columns names
     private static final String COLUMN_CARD_NUMBER = "card_number";
     private static final String COLUMN_CVC = "cvc";
-   // private static final String COLUMN_LINKED_ACCOUNT = "linked_account";
+    private static final String COLUMN_LINKED_ACCOUNT = "linked_account";
 
     private static final int CARD_NUMBER = 1;
     private static final int CVC = 2;
-   // private static final int LINKED_ACCOUNT = 3;
-    // Payee Table Columns names
-    private static final String PAYEE_ID = "_PayeeID";
-    private static final String PAYEE_NAME = "PayeeName";
-
-    private static final int PAYEE_ID_COLUMN = 1;
-    private static final int PAYEE_NAME_COLUMN = 2;
+    private static final int LINKED_ACCOUNT = 3;
 
     // Transaction Table Columns names
     private static final String TRANSACTION_ID = "_TransactionID";
@@ -93,13 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int TRANSACTION_AMOUNT_COLUMN = 7;
     private static final int TRANSACTION_TYPE_COLUMN = 8;
 
-    private static final String CREATE_PAYEES_TABLE =
-            "CREATE TABLE " + PAYEES_TABLE + " (" +
-                    COLUMN_USER_ID + " INTEGER NOT NULL, " +
-                    PAYEE_ID + " TEXT NOT NULL, " +
-                    PAYEE_NAME + " TEXT, " +
-                    "PRIMARY KEY(" + COLUMN_USER_ID + "," + PAYEE_ID + "), " +
-                    "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + "))";
+
 
     // create user table sql query
     private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
@@ -107,10 +96,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_USER_EMAIL + " TEXT NOT NULL," + COLUMN_USER_PASSWORD + " TEXT NOT NULL," + COLUMN_USER_CITY + " TEXT NOT NULL," + COLUMN_USER_POSTAL_CODE + " TEXT NOT NULL," + COLUMN_USER_ADDRESS + " TEXT NOT NULL," + COLUMN_USER_SALT + " TEXT NOT NULL," + COLUMN_USER_TYPE + " TEXT NOT NULL"  + ")";
 
     // create account table sql query
-    //private String CREATE_ACCOUNT_TABLE = "CREATE TABLE " + TABLE_ACCOUNT + "(" +
-            //COLUMN_USER_ID + " INTEGER NOT NULL, " +
-            // COLUMN_ACCOUNT_ID + " TEXT," + COLUMN_ACCOUNT_BALANCE + " REAL,"
-          //  + COLUMN_ACCOUNT_NAME + " TEXT" + ")";
+
 
     private static final String CREATE_ACCOUNTS_TABLE =
             "CREATE TABLE " + TABLE_ACCOUNT + " (" +
@@ -118,20 +104,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_ACCOUNT_ID + " TEXT NOT NULL, " +
                     COLUMN_ACCOUNT_NAME + " TEXT, " +
                     COLUMN_ACCOUNT_BALANCE + " REAL, " +
+                    COLUMN_PAYMENTS_ALLOWED + "INTEGER NOT NULL, " +
                     "PRIMARY KEY(" + COLUMN_USER_ID + "," + COLUMN_ACCOUNT_ID + "), " +
                     "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + "))";
 
     private static final String CREATE_CARD_TABLE = "CREATE TABLE " + TABLE_CARD + "(" +
             COLUMN_USER_ID + " INTEGER NOT NULL , " +
-            COLUMN_ACCOUNT_ID + " TEXT NOT NULL," +
-            COLUMN_CARD_NUMBER + " TEXT NOT NULL, " +
-            COLUMN_CVC + " TEXT NOT NULL)";
+            COLUMN_LINKED_ACCOUNT+ " TEXT NOT NULL," +
+            COLUMN_CARD_NUMBER + " TEXT , " +
+            COLUMN_CVC + " TEXT NOT NULL, " +
+            "PRIMARY KEY(" + COLUMN_CARD_NUMBER +"), " +
+            "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + "))";
 
     // drop table sql query
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
     private String DROP_ACCOUNT_TABLE = "DROP TABLE IF EXISTS " + TABLE_ACCOUNT;
     private String DROP_CARD_TABLE = "DROP TABLE IF EXISTS " + TABLE_CARD;
-    private String DROP_PAYEES_TABLE = "DROP TABLE IF EXISTS " + PAYEES_TABLE;
     private String DROP_TRANSACTIONS_TABLE = "DROP TABLE IF EXISTS " + TRANSACTIONS_TABLE;
 
     private static final String CREATE_TRANSACTIONS_TABLE =
@@ -164,7 +152,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_USER_TABLE);
-        db.execSQL(CREATE_PAYEES_TABLE);
         db.execSQL(CREATE_ACCOUNTS_TABLE);
         db.execSQL(CREATE_CARD_TABLE);
         db.execSQL(CREATE_TRANSACTIONS_TABLE);
@@ -177,7 +164,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //Drop User Table if exist
         db.execSQL(DROP_USER_TABLE);
-        db.execSQL(PAYEES_TABLE);
         db.execSQL(DROP_ACCOUNT_TABLE);
         db.execSQL(TRANSACTIONS_TABLE);
         db.execSQL(TABLE_CARD);
@@ -210,7 +196,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void saveNewAccount(User user, Account account) {
+    public void saveNewAccount(User user, Account account, Switch payments) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -218,24 +204,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_ACCOUNT_ID, account.getAccountNo());
         values.put(COLUMN_ACCOUNT_NAME, account.getAccountName());
         values.put(COLUMN_ACCOUNT_BALANCE, account.getAccountBalance());
+        if(payments.isChecked()){
+            values.put(COLUMN_PAYMENTS_ALLOWED, 1);
+        } else {
+            values.put(COLUMN_PAYMENTS_ALLOWED, 0);
+        }
 
-       // if (account.getPayments() == 1) {
-       //     values.put(COLUMN_ACCOUNT_PAYMENTS_ALLOWED, 1);
-       // } else {
-        //    values.put(COLUMN_ACCOUNT_PAYMENTS_ALLOWED, 0);
-       // }
 
         db.insert(TABLE_ACCOUNT, null, values);
         db.close();
     }
 
-    public void saveNewCard(User user, Account account, String cardNumber,  String cvc) {
+    public void saveNewCard(User user, String account, String cardNumber,  String cvc) {
         SQLiteDatabase db = this.getWritableDatabase();
 
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_ID, user.getId());
-        values.put(COLUMN_ACCOUNT_ID, account.getAccountNo());
+        values.put(COLUMN_LINKED_ACCOUNT, account);
         values.put(COLUMN_CARD_NUMBER, cardNumber);
         values.put(COLUMN_CVC, cvc);
 
@@ -377,35 +363,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param
      * @return true/false
      */
-    public ArrayList<Payee> getPayeesFromCurrentProfile(long profileID) {
-        ArrayList<Payee> payees = new ArrayList<>();
-        database = this.getReadableDatabase();
 
-        Cursor cursor = database.query(PAYEES_TABLE, null, null, null, null,
-                null ,null);
-        getPayeesFromCursor(profileID, payees, cursor);
 
-        cursor.close();
-        database.close();
 
-        return payees;
-    }
 
-    private void getPayeesFromCursor(long profileID, ArrayList<Payee> payees, Cursor cursor) {
-
-        while (cursor.moveToNext()) {
-
-            if (profileID == cursor.getLong(USER_ID)) {
-                long id = cursor.getLong(USER_ID);
-                String payeeID = cursor.getString(PAYEE_ID_COLUMN);
-                String payeeName = cursor.getString(PAYEE_NAME_COLUMN);
-
-                payees.add(new Payee(payeeID, payeeName, id));
-            }
-        }
-    }
-
-    public ArrayList<Transaction> getTransactionsFromCurrentAccount(long profileID, String accountNo) {
+    public ArrayList<Transaction> getTransactionsFromCurrentAccount(long userID, String accountNo) {
 
         ArrayList<Transaction> transactions = new ArrayList<>();
         database = this.getReadableDatabase();
@@ -413,18 +375,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = database.query(TRANSACTIONS_TABLE, null, null, null, null,
                 null ,null);
 
-        getTransactionsFromCursor(profileID, accountNo, transactions, cursor);
+        getTransactionsFromCursor(userID, accountNo, transactions, cursor);
 
         cursor.close();
         database.close();
 
         return transactions;
     }
-    private void getTransactionsFromCursor(long profileID, String accountNo, ArrayList<Transaction> transactions, Cursor cursor) {
+    private void getTransactionsFromCursor(long userID, String accountNo, ArrayList<Transaction> transactions, Cursor cursor) {
 
         while (cursor.moveToNext()) {
-
-            if (profileID == cursor.getLong(USER_ID)) {
+            System.out.println(userID);
+            System.out.println(cursor.getLong(USER_ID));
+            if (userID == cursor.getLong(USER_ID)) {
                 long id = cursor.getLong(USER_ID);
                 if (accountNo.equals(cursor.getString(ACCOUNT_ID))) {
                     String transactionID = cursor.getString(TRANSACTION_ID_COLUMN);
@@ -597,9 +560,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String accountNo = cursor.getString(ACCOUNT_ID);
                 String accountName = cursor.getString(ACCOUNT_NAME);
                 double accountBalance = cursor.getDouble(ACCOUNT_BALANCE);
-                //int payments = cursor.getInt(ACCOUNT_PAYMENTS_ALLOWED);
+                boolean paymentsAllowed = cursor.getInt(PAYMENTS_ALLOWED) == 1;
 
-                accounts.add(new Account(accountName, accountNo, accountBalance, id));
+                accounts.add(new Account(accountName, accountNo, accountBalance, id, paymentsAllowed));
             }
         }
     }
@@ -626,8 +589,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             if (userID == cursor2.getLong(USER_ID)) {
                 long id = cursor2.getLong(USER_ID);
-                System.out.println(cursor2.getLong(USER_ID));
-                String account_id = cursor2.getString(ACCOUNT_ID);
+               System.out.println(cursor2.getLong(USER_ID));
+                String account_id = cursor2.getString(LINKED_ACCOUNT);
                 System.out.println(cursor2.getString(ACCOUNT_ID));
                 String card_number = cursor2.getString(CARD_NUMBER);
                 System.out.println(cursor2.getString(CARD_NUMBER));

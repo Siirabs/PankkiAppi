@@ -122,7 +122,7 @@ public class TransferFragment extends Fragment {
                 Toast.makeText(getActivity(), "You cannot make a transfer to the same account", Toast.LENGTH_SHORT).show();
             }
             else if(transferAmount < 0.01) {
-                Toast.makeText(getActivity(), "The minimum amount for a transfer is $0.01", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "The minimum amount for a transfer is €0.01", Toast.LENGTH_SHORT).show();
 
             } else if (transferAmount > user.getAccounts().get(spnSendingAccount.getSelectedItemPosition()).getAccountBalance()) {
 
@@ -134,31 +134,37 @@ public class TransferFragment extends Fragment {
 
                 Account sendingAccount = (Account) spnSendingAccount.getItemAtPosition(sendingAccIndex);
                 Account receivingAccount = (Account) spnReceivingAccount.getItemAtPosition(receivingAccIndex);
+                if (sendingAccount.isPaymentsAllowed() == false){
+                    Toast toast = Toast.makeText(getContext(), "This account is now allowed to make transfers.", Toast.LENGTH_SHORT);
+                    toast.show();
 
-                user.addTransferTransaction(sendingAccount, receivingAccount, transferAmount);
+                }
+                else {
+                    user.addTransferTransaction(sendingAccount, receivingAccount, transferAmount);
 
-                spnSendingAccount.setAdapter(accountAdapter);
-                spnReceivingAccount.setAdapter(accountAdapter);
+                    spnSendingAccount.setAdapter(accountAdapter);
+                    spnReceivingAccount.setAdapter(accountAdapter);
 
-                spnSendingAccount.setSelection(sendingAccIndex);
-                spnReceivingAccount.setSelection(receivingAccIndex);
+                    spnSendingAccount.setSelection(sendingAccIndex);
+                    spnReceivingAccount.setSelection(receivingAccIndex);
 
-                DatabaseHelper Db = new DatabaseHelper(getActivity().getApplicationContext());
+                    DatabaseHelper Db = new DatabaseHelper(getActivity().getApplicationContext());
 
-                Db.overwriteAccount(user, sendingAccount);
-                Db.overwriteAccount(user, receivingAccount);
+                    Db.overwriteAccount(user, sendingAccount);
+                    Db.overwriteAccount(user, receivingAccount);
 
-                Db.saveNewTransaction(user, sendingAccount.getAccountNo(),
-                        sendingAccount.getTransactions().get(sendingAccount.getTransactions().size()-1));
-                Db.saveNewTransaction(user, receivingAccount.getAccountNo(),
-                        receivingAccount.getTransactions().get(receivingAccount.getTransactions().size()-1));
+                    Db.saveNewTransaction(user, sendingAccount.getAccountNo(),
+                            sendingAccount.getTransactions().get(sendingAccount.getTransactions().size() - 1));
+                    Db.saveNewTransaction(user, receivingAccount.getAccountNo(),
+                            receivingAccount.getTransactions().get(receivingAccount.getTransactions().size() - 1));
 
 
-                SharedPreferences.Editor prefsEditor = userPreferences.edit();
-                json = gson.toJson(user);
-                prefsEditor.putString("LastProfileUsed", json).apply();
+                    SharedPreferences.Editor prefsEditor = userPreferences.edit();
+                    json = gson.toJson(user);
+                    prefsEditor.putString("LastProfileUsed", json).apply();
 
-                Toast.makeText(getActivity(), "Transfer of $" + String.format(Locale.getDefault(), "%.2f",transferAmount) + " successfully made", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Transfer of €" + String.format(Locale.getDefault(), "%.2f", transferAmount) + " successfully made", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

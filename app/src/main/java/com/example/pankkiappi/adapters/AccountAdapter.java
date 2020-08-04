@@ -44,7 +44,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         txtAccountNo.setText(context.getString(R.string.account_no) + " " + account.getAccountNo());
 
         TextView txtAccountBalance = convertView.findViewById(R.id.txt_balance);
-        txtAccountBalance.setText("Account balance: $" + String.format("%.2f",account.getAccountBalance()));
+        txtAccountBalance.setText("Account balance: €" + String.format("%.2f",account.getAccountBalance()));
 
         return convertView;
     }

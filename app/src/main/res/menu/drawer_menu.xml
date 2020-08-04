@@ -31,10 +31,6 @@
                     android:id="@+id/nav_transfer"
                     android:icon="@drawable/ic_transfer"
                     android:title="Make a Transfer" />
-                <item
-                    android:id="@+id/nav_payment"
-                    android:icon="@drawable/ic_payment"
-                    android:title="Make a Payment" />
             </group>
         </menu>
     </item>

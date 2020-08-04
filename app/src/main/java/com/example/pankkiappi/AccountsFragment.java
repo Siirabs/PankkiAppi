@@ -38,7 +38,7 @@ public class AccountsFragment extends Fragment {
     private FloatingActionButton fab;
     private ListView lstAccounts;
     private TextView txtTitleMessage;
-    private TextView txtDetailMessage;
+
     private Button btnCancel;
     private Button btnAddAccount;
     private EditText edtAccountName;
@@ -74,7 +74,7 @@ public class AccountsFragment extends Fragment {
 
         lstAccounts = view.findViewById(R.id.lst_accounts);
         txtTitleMessage = view.findViewById(R.id.txt_title_msg);
-        txtDetailMessage = view.findViewById(R.id.txt_details_msg);
+
 
         setValues();
 
@@ -131,11 +131,11 @@ public class AccountsFragment extends Fragment {
 
         if (user.getAccounts().size() == 0) {
             txtTitleMessage.setText("Add an Account with the button below");
-            txtDetailMessage.setVisibility(View.GONE);
+
             lstAccounts.setVisibility(View.GONE);
         } else {
             txtTitleMessage.setText("Select an Account to view Transactions");
-            txtDetailMessage.setVisibility(View.VISIBLE);
+
             lstAccounts.setVisibility(View.VISIBLE);
         }
 
@@ -203,9 +203,9 @@ public class AccountsFragment extends Fragment {
 
                     DatabaseHelper db = new DatabaseHelper(getActivity().getApplicationContext());
                     if (allowPayments.isChecked()) {
-                        user.addAccount(edtAccountName.getText().toString(), 0, 1);
+                        user.addAccount(edtAccountName.getText().toString(), 0, true);
                     } else {
-                        user.addAccount(edtAccountName.getText().toString(), 0, 0);
+                        user.addAccount(edtAccountName.getText().toString(), 0, false);
                     }
 
 
@@ -218,13 +218,13 @@ public class AccountsFragment extends Fragment {
                         }
                     }
 
-                    db.saveNewAccount(user, user.getAccounts().get(user.getAccounts().size()-1));
+                    db.saveNewAccount(user, user.getAccounts().get(user.getAccounts().size()-1), allowPayments);
 
                     Toast.makeText(this.getActivity(), "Account created", Toast.LENGTH_SHORT).show();
 
                     if (user.getAccounts().size() == 1) {
                         txtTitleMessage.setText("Select an Account to view Transactions");
-                        txtDetailMessage.setVisibility(View.VISIBLE);
+
                         lstAccounts.setVisibility(View.VISIBLE);
                     }
 

@@ -51,11 +51,8 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
         txtTransactionTimestamp.setText(transaction.getTimestamp());
         txtTransactionAmount.setText("Amount: $" + String.format("%.2f",transaction.getAmount()));
 
-        if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.PAYMENT) {
-            imgTransactionIcon.setImageResource(R.drawable.lst_payment_icon);
-            txtTransactionInfo.setText("To Payee: " + transaction.getPayee());
-            txtTransactionAmount.setTextColor(Color.RED);
-        } else if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.TRANSFER) {
+
+         if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.TRANSFER) {
             imgTransactionIcon.setImageResource(R.drawable.lst_transfer_icon);
             txtTransactionInfo.setText("From: " + transaction.getSendingAccount() + " - " + "To: " + transaction.getDestinationAccount());
             txtTransactionAmount.setTextColor(getContext().getResources().getColor(android.R.color.holo_blue_light));

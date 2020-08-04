@@ -48,7 +48,6 @@
 
     <string-array name="transaction_filters">
         <item>All</item>
-        <item>Payments</item>
         <item>Transfers</item>
         <item>Deposits</item>
     </string-array>

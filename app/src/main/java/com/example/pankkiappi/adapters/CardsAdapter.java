@@ -38,16 +38,21 @@ public class CardsAdapter extends ArrayAdapter<Card> {
 
 
         Card card = getItem(position);
-        String CardNumber = card.getCvc();
-        String AccountNo = card.getAccountNo();
-        TextView txtCardNo = convertView.findViewById(R.id.txt_card_no);
-        txtCardNo.setText("Card Number: " + CardNumber);
+        String Cvc = card.getCvc();
+        String CardNumber = card.getAccountNo();
+        String AccountNo = card.getCardNumber();
 
-        TextView txtAccNo = convertView.findViewById(R.id.txt_acc_no);
-        txtAccNo.setText("Linked Account: " + AccountNo);
+        TextView linkedAccount = convertView.findViewById(R.id.txt_linked_account);
+        linkedAccount.setText("Linked Account: " + AccountNo);
 
-        TextView txtCvc = convertView.findViewById(R.id.txt_card);
-        txtCvc.setText("CARD");
+        TextView cardNo = convertView.findViewById(R.id.txt_card_no);
+        cardNo.setText("Card Number: " + Cvc);
+
+        TextView cvc = convertView.findViewById(R.id.txt_cvc);
+        cvc.setText("CVC: " + CardNumber);
+
+
+
 
         return convertView;
     }

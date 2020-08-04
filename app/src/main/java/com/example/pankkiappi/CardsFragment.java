@@ -39,7 +39,7 @@ public class CardsFragment extends Fragment {
     private FloatingActionButton fab;
     private ListView lstCards;
     private TextView txtTitleMessage;
-    private TextView txtDetailMessage;
+
     private Button btnCancel;
     private Button btnAddCard;
     private Spinner spinner;
@@ -75,7 +75,7 @@ public class CardsFragment extends Fragment {
 
         lstCards = view.findViewById(R.id.lst_cards);
         txtTitleMessage = view.findViewById(R.id.txt_title_msg);
-        txtDetailMessage = view.findViewById(R.id.txt_details_msg);
+
 
         setValues();
 
@@ -158,7 +158,7 @@ public class CardsFragment extends Fragment {
 
 
         txtTitleMessage.setText("Select an Account to view Transactions");
-        txtDetailMessage.setVisibility(View.VISIBLE);
+
         lstCards.setVisibility(View.VISIBLE);
 
 
@@ -178,8 +178,8 @@ public class CardsFragment extends Fragment {
 
         String cvc = Integer.toString(cvcnumber);
 
-
-        db.saveNewCard(user, user.getAccounts().get(user.getAccounts().size()-1), cardNumber,  cvc);
+        //user.getAccounts().get(user.getAccounts().size()-1)
+        db.saveNewCard(user, account , cardNumber,  cvc);
        // ArrayList<Card> cards = new ArrayList<>();
        // for (Account acc : user.getAccounts())  {
         //   cards.addAll(acc.getCards());

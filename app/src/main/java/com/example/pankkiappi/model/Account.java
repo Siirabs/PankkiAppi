@@ -10,20 +10,20 @@ public class Account {
     private double accountBalance;
     private ArrayList<Transaction> transactions;
     private ArrayList<Card> cards;
-    private int payments;
+    private boolean paymentsAllowed;
     private long dbID;
 
-    public Account (String accountName, String accountNo, double accountBalance) {
+    public Account (String accountName, String accountNo, double accountBalance, boolean paymentsAllowed) {
         this.accountName = accountName;
         this.accountNo = accountNo;
         this.accountBalance = accountBalance;
         cards = new ArrayList<>();
         transactions = new ArrayList<>();
-        //this.payments = payments;
+        this.paymentsAllowed = paymentsAllowed;
     }
 
-    public Account (String accountName, String accountNo, double accountBalance, long dbID) {
-        this(accountName, accountNo, accountBalance);
+    public Account (String accountName, String accountNo, double accountBalance, long dbID, boolean paymentsAllowed) {
+        this(accountName, accountNo, accountBalance, paymentsAllowed);
         this.dbID = dbID;
     }
 
@@ -40,7 +40,6 @@ public class Account {
         return accountBalance;
     }
 
-    //public int getPayments() {return payments;}
 
     public void setDbID(long dbID) { this.dbID = dbID; }
 
@@ -56,20 +55,7 @@ public class Account {
         this.cards = cards;
     }
 
-    public void addPaymentTransaction (String payee, double amount) {
-        accountBalance -= amount;
-
-        int paymentCount = 0;
-
-        for (int i = 0; i < transactions.size(); i++) {
-            if (transactions.get(i).getTransactionType() == Transaction.TRANSACTION_TYPE.PAYMENT)  {
-                paymentCount++;
-            }
-        }
-
-        Transaction payment = new Transaction("T" + (transactions.size() + 1) + "-P" + (paymentCount+1), payee, amount);
-        transactions.add(payment);
-    }
+    public boolean isPaymentsAllowed() {return paymentsAllowed;}
 
     public void addDepositTransaction(double amount) {
         accountBalance += amount;
@@ -88,7 +74,7 @@ public class Account {
     }
 
     public String toString() {
-        return (accountName + " ($" + String.format(Locale.getDefault(), "%.2f",accountBalance) + ")");
+        return (accountName + " (€" + String.format(Locale.getDefault(), "%.2f",accountBalance) + ")");
     }
 
     public String toTransactionString() { return (accountName + " (" + accountNo + ")"); }
