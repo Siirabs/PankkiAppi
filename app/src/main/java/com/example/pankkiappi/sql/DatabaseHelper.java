@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "Projuu.db";
+    private static final String DATABASE_NAME = "Projuuu.db";
 
     // User table name
     private static final String TABLE_USER = "user";
@@ -104,7 +104,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_ACCOUNT_ID + " TEXT NOT NULL, " +
                     COLUMN_ACCOUNT_NAME + " TEXT, " +
                     COLUMN_ACCOUNT_BALANCE + " REAL, " +
-                    COLUMN_PAYMENTS_ALLOWED + "INTEGER NOT NULL, " +
+                    COLUMN_PAYMENTS_ALLOWED + " INTEGER NOT NULL, " +
                     "PRIMARY KEY(" + COLUMN_USER_ID + "," + COLUMN_ACCOUNT_ID + "), " +
                     "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + "))";
 
