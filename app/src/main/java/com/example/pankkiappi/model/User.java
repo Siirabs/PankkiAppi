@@ -14,14 +14,6 @@ public class User {
     private String type;
     private ArrayList<Account> accounts = new ArrayList<>();
 
-    private ArrayList<Payee> payees;
-
-    // public void setInfo(int id, String name, String email) {
-    // this.id = id;
-    //this.name = name;
-    // this.email = email;
-
-    //}
 
     public int getId() {
         return id;
@@ -100,7 +92,7 @@ public class User {
     }
 
 
-    //public void setAccounts(ArrayList<Account> accounts) {this.accounts = accounts;}
+
 
     public void setAccountsFromDB(ArrayList<Account> accounts) {
         this.accounts = accounts;

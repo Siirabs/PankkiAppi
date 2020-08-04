@@ -66,9 +66,7 @@ public class TransferFragment extends Fragment {
         return rootView;
     }
 
-    /**
-     * method used to setup the values for the views and fields
-     */
+
     private void setValues() {
 
         userPreferences = getActivity().getSharedPreferences("LastProfileUsed", MODE_PRIVATE);
@@ -89,9 +87,7 @@ public class TransferFragment extends Fragment {
         setAdapters();
     }
 
-    /**
-     * method that sets up the adapters
-     */
+
     private void setAdapters() {
         accounts = user.getAccounts();
         accountAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, accounts);
@@ -102,9 +98,7 @@ public class TransferFragment extends Fragment {
         spnReceivingAccount.setSelection(1);
     }
 
-    /**
-     * method that confirms the transfer
-     */
+
     private void confirmTransfer() {
 
         int receivingAccIndex = spnReceivingAccount.getSelectedItemPosition();

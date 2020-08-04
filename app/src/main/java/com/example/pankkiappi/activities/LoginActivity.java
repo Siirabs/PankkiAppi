@@ -65,9 +65,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initObjects();
     }
 
-    /**
-     * This method is to initialize views
-     */
+
     private void initViews() {
         userPreferences = this.getSharedPreferences("LastProfileUsed", MODE_PRIVATE);
         nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollView);
@@ -83,16 +81,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         textViewLinkRegister = (AppCompatTextView) findViewById(R.id.textViewLinkRegister);
 
-        //SharedPreferences userPreferences = this.getSharedPreferences("LastProfileUsed", MODE_PRIVATE);
-        //Gson gson = new Gson();
-        //String json = userPreferences.getString("LastProfileUsed", "");
-        //User user = gson.fromJson(json, User.class);
 
     }
 
-    /**
-     * This method is to initialize listeners
-     */
+
     private void initListeners() {
         appCompatButtonLogin.setOnClickListener(this);
         textViewLinkRegister.setOnClickListener(this);
@@ -100,9 +92,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    /**
-     * This method is to initialize objects to be used
-     */
+
     private void initObjects() {
         databaseHelper = new DatabaseHelper(activity);
         inputValidation = new InputValidation(activity);
@@ -111,11 +101,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
 
-    /**
-     * This implemented method is to listen the click on view
-     *
-     * @param v
-     */
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -133,11 +119,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    /**
-     * This method is to validate the input text fields and verify login credentials from SQLite
-     */
-    private void verifyFromSQLite() {
 
+    private void verifyFromSQLite() {
+        //verifying account from database
         if (!inputValidation.isInputEditTextFilled(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
             return;
         }
@@ -166,10 +150,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         lastProfileUsed = users.get(i);
 
+                        //saving last profile used to json
                         SharedPreferences.Editor prefsEditor = userPreferences.edit();
                         gson = new Gson();
                         json = gson.toJson(lastProfileUsed);
                         prefsEditor.putString("LastProfileUsed", json).apply();
+
+                        //starting digitcode activity as login credentials were correct
                         Intent digitCode = new Intent(activity, digitCode.class);
                         emptyInputEditText();
                         digitCode.putExtra("EMAIL", email);
@@ -188,9 +175,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
 
-            /**
-             * This method is to empty all input edit text
-             */
+
 
         }
     private void emptyInputEditText () {

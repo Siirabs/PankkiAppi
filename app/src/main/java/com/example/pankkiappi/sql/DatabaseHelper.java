@@ -10,13 +10,13 @@ import android.widget.Switch;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+
 import java.util.ArrayList;
-import java.util.List;
+
 
 import com.example.pankkiappi.model.Account;
 import com.example.pankkiappi.model.Card;
-import com.example.pankkiappi.model.Payee;
+
 import com.example.pankkiappi.model.Transaction;
 import com.example.pankkiappi.model.User;
 
@@ -137,11 +137,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY(" + COLUMN_USER_ID + "," + COLUMN_ACCOUNT_ID + ") REFERENCES " +
                     TABLE_ACCOUNT + "(" + COLUMN_USER_ID + "," + COLUMN_ACCOUNT_ID + ")," +
                     "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + "))";
-    /**
-     * Constructor
-     *
-     * @param context
-     */
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -172,11 +168,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    /**
-     * This method is to create user record
-     *
-     * @param user
-     */
+
     public void addUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -196,7 +188,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void saveNewAccount(User user, Account account, Switch payments) {
+    public void saveNewAccount(User user, Account account, Switch transfer) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -204,7 +196,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_ACCOUNT_ID, account.getAccountNo());
         values.put(COLUMN_ACCOUNT_NAME, account.getAccountName());
         values.put(COLUMN_ACCOUNT_BALANCE, account.getAccountBalance());
-        if(payments.isChecked()){
+        if(transfer.isChecked()){
             values.put(COLUMN_PAYMENTS_ALLOWED, 1);
         } else {
             values.put(COLUMN_PAYMENTS_ALLOWED, 0);
@@ -243,19 +235,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.close();
     }
 
+
     public void saveNewTransaction(User user, String accountNo, Transaction transaction) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_ID, user.getId());
         values.put(COLUMN_ACCOUNT_ID, accountNo);
-       // values.put(TRANSA);
+        values.put(TRANSACTION_ID, transaction.getTransactionID());
+        values.put(TIMESTAMP, transaction.getTimestamp());
+
+        if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.TRANSFER) {
+            values.put(SENDING_ACCOUNT, transaction.getSendingAccount());
+            values.put(DESTINATION_ACCOUNT, transaction.getDestinationAccount());
+            values.putNull(TRANSACTION_PAYEE);
+        } else if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.PAYMENT) {
+            values.putNull(SENDING_ACCOUNT);
+            values.putNull(DESTINATION_ACCOUNT);
+            values.put(TRANSACTION_PAYEE, transaction.getPayee());
+        } else if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.DEPOSIT) {
+            values.putNull(SENDING_ACCOUNT);
+            values.putNull(DESTINATION_ACCOUNT);
+            values.putNull(TRANSACTION_PAYEE);
+        }
+
+        values.put(TRANSACTION_AMOUNT, transaction.getAmount());
+        values.put(TRANS_TYPE, transaction.getTransactionType().toString());
+
+        long id = db.insert(TRANSACTIONS_TABLE, null, values);
+
+        transaction.setDbId(id);
+
+        db.close();
     }
-    /**
-     * This method is to fetch all user and return the list of user records
-     *
-     * @return list
-     */
+
     public ArrayList<User> getAllUser() {
 
 
@@ -280,11 +293,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         // query the user table
-        /**
-         * Here query function is used to fetch records from user table this function works like we use sql query.
-         * SQL query equivalent to this query function is
-         * SELECT user_id,user_name,user_email,user_password FROM user ORDER BY user_name;
-         */
+
         Cursor cursor = db.query(TABLE_USER, //Table to query
                 columns,    //columns to return
                 null,        //columns for the WHERE clause
@@ -319,11 +328,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return userList;
     }
 
-    /**
-     * This method to update user record
-     *
-     * @param user
-     */
+
     public void updateUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -344,25 +349,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    /**
-     * This method is to delete user record
-     *
-     * @param user
-     */
-    public void deleteUser(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        // delete user record by id
-        db.delete(TABLE_USER, COLUMN_USER_ID + " = ?",
-                new String[]{String.valueOf(user.getId())});
-        db.close();
-    }
 
-    /**
-     * This method to check user exist or not
-     *
-     * @param
-     * @return true/false
-     */
+
 
 
 
@@ -465,13 +453,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
 
     }
-    /**
-     * This method to check user exist or not
-     *
-     * @param email
-     * @param password
-     * @return true/false
-     */
+
     public boolean checkUser(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
         String generatedPassword = null;
@@ -510,11 +492,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String[] selectionArgs = {email, password};
 
         // query user table with conditions
-        /**
-         * Here query function is used to fetch records from user table this function works like we use sql query.
-         * SQL query equivalent to this query function is
-         * SELECT user_id FROM user WHERE user_email = 'jack@androidtutorialshub.com' AND user_password = 'qwerty';
-         */
+
         Cursor cursor = db.query(TABLE_USER, //Table to query
                 columns,                    //columns to return
                 selection,                  //columns for the WHERE clause

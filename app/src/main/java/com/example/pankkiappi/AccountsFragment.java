@@ -4,7 +4,6 @@ import android.accounts.Account;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +44,7 @@ public class AccountsFragment extends Fragment {
     private EditText edtInitAccountBalance;
     private Switch allowPayments;
 
+
     private Gson gson;
     private SharedPreferences userPreferences;
     private User user;
@@ -67,13 +67,14 @@ public class AccountsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_accounts, container, false);
 
         fab = view.findViewById(R.id.floating_action_btn);
 
         lstAccounts = view.findViewById(R.id.lst_accounts);
         txtTitleMessage = view.findViewById(R.id.txt_title_msg);
+
 
 
         setValues();

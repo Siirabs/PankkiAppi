@@ -27,9 +27,7 @@ public class Account {
         this.dbID = dbID;
     }
 
-    /**
-     * Getters for the account name, number and balance
-     */
+
     public String getAccountName() {
         return accountName;
     }

@@ -179,9 +179,7 @@ public class TransactionFragment extends Fragment {
         return rootView;
     }
 
-    /**
-     * method used to setup the values for the views and fields
-     */
+
     private void setValues() {
 
         SharedPreferences userPreferences = getActivity().getSharedPreferences("LastProfileUsed", MODE_PRIVATE);
@@ -221,9 +219,7 @@ public class TransactionFragment extends Fragment {
 
     }
 
-    /**
-     * method used to setup the adapters
-     */
+
     private void setupTransactionAdapter(int selectedAccountIndex, TransactionTypeFilter transFilter, DateFilter dateFilter) {
         ArrayList<Transaction> transactions = user.getAccounts().get(selectedAccountIndex).getTransactions();
 

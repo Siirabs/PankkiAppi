@@ -254,7 +254,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
             accountAdapter.setDropDownViewResource(R.layout.spinner_item);
             spnAccounts.setAdapter(accountAdapter);
 
-            //TODO: Add checkbox if the user wants to make more than one deposit
+
 
             depositDialog.dismiss();
 

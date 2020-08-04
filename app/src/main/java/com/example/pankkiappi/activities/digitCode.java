@@ -43,6 +43,7 @@ public class digitCode extends AppCompatActivity {
     }
 
     public void random() {
+        //Generating random six digit number
         final SecureRandom random = new SecureRandom();
         int randomNumber = random.nextInt(999999);
 
@@ -61,7 +62,7 @@ public class digitCode extends AppCompatActivity {
                 System.out.println(temp);
                 Bundle bundle = getIntent().getExtras();
                 String email = bundle.getString("EMAIL");
-
+                //if user entered code matches random generated code
                 if (randomString.equals(temp)) {
                         if (!databaseHelper.checkAdmin(email)) {
                             Intent drawerIntent = new Intent(activity, DrawerActivity.class);
@@ -72,6 +73,7 @@ public class digitCode extends AppCompatActivity {
                             System.out.println("admin paneeli");
                             startActivity(drawerIntent);
                         }
+                        //If code is wrong
                     } else {
                         editText.setText(null);
                         Toast toast = Toast.makeText(getApplicationContext(),

@@ -68,7 +68,7 @@ public class CardsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_cards, container, false);
 
         fab = view.findViewById(R.id.floating_action_btn);
@@ -101,7 +101,7 @@ public class CardsFragment extends Fragment {
         });
 
         edtAccountName = CardDialog.findViewById(R.id.edt_payee_name);
-        //edtInitAccountBalance = CardDialog.findViewById(R.id.edt_init_bal);
+
         spinner = CardDialog.findViewById(R.id.accountSpinner);
         btnCancel = CardDialog.findViewById(R.id.btn_cancel_dialog);
         btnAddCard = CardDialog.findViewById(R.id.btn_add_payee);
@@ -157,7 +157,7 @@ public class CardsFragment extends Fragment {
 
 
 
-        txtTitleMessage.setText("Select an Account to view Transactions");
+        txtTitleMessage.setText("Here you can see all of your cards");
 
         lstCards.setVisibility(View.VISIBLE);
 
@@ -178,12 +178,9 @@ public class CardsFragment extends Fragment {
 
         String cvc = Integer.toString(cvcnumber);
 
-        //user.getAccounts().get(user.getAccounts().size()-1)
+
         db.saveNewCard(user, account , cardNumber,  cvc);
-       // ArrayList<Card> cards = new ArrayList<>();
-       // for (Account acc : user.getAccounts())  {
-        //   cards.addAll(acc.getCards());
-       // }
+
         this.account.setCardsFromDB(db.getCardsFromCurrentProfile(user.getId()));
         ArrayList<Card> cards = this.account.getCards();
         CardsAdapter adapter = new CardsAdapter(this.getActivity(), R.layout.lst_cards, cards );

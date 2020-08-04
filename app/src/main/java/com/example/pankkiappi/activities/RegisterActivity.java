@@ -72,9 +72,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         initListeners();
         initObjects();
     }
-    /**
-     * This method is to initialize views
-     */
+
     private void initViews() {
         nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollView);
 
@@ -100,18 +98,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    /**
-     * This method is to initialize listeners
-     */
+
     private void initListeners() {
         appCompatButtonRegister.setOnClickListener(this);
         appCompatTextViewLoginLink.setOnClickListener(this);
 
     }
 
-    /**
-     * This method is to initialize objects to be used
-     */
+
     private void initObjects() {
         inputValidation = new InputValidation(activity);
         databaseHelper = new DatabaseHelper(activity);
@@ -123,11 +117,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    /**
-     * This implemented method is to listen the click on view
-     *
-     * @param v
-     */
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -142,10 +132,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    /**
-     * This method is to validate the input text fields and post data to SQLite
-     */
+
     private void postDataToSQLite() {
+        //validating user inputs, like is email in correct form (requires @), does password match good password patterns.
         if (!inputValidation.isInputEditTextFilled(textInputEditTextName, textInputLayoutName, getString(R.string.error_message_name))) {
             return;
         }
@@ -168,9 +157,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-       // if (!inputValidation.isValidPassword(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_invalid_password))) {
-            //return;
-        //}
+        if (!inputValidation.isValidPassword(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_invalid_password))) {
+            return;
+        }
 
         if (!inputValidation.isInputEditTextMatches(textInputEditTextPassword, textInputEditTextConfirmPassword,
                 textInputLayoutConfirmPassword, getString(R.string.error_password_match))) {
@@ -200,10 +189,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             String generatedPassword = null;
             String passwordToHash = textInputEditTextPassword.getText().toString().trim()+saltString;
-
+            //Hashing password
             try {
                 MessageDigest md = MessageDigest.getInstance("SHA-512");
                 md.update(bytes);
+
+                //Using ISO-8859-1 encoding so that byte[] -> string and string -> byte[] conversion won't break
+
                 byte[] hashedPassword = md.digest(passwordToHash.getBytes(StandardCharsets.ISO_8859_1)); //Käytetään iso-8859-1 enkoodausta jotta byte[] -> string ja takaisin string -> byte[] muunnos ei mene vituiks
                 StringBuilder sb = new StringBuilder();
                 for(int i=0; i< hashedPassword.length ;i++){
@@ -234,9 +226,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    /**
-     * This method is to empty all input edit text
-     */
+
     private void emptyInputEditText() {
         textInputEditTextName.setText(null);
         textInputEditTextEmail.setText(null);
