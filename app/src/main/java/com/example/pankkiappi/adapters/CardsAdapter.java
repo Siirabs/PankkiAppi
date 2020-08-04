@@ -36,7 +36,7 @@ public class CardsAdapter extends ArrayAdapter<Card> {
             convertView = inflater.inflate(resource, parent, false);
         }
 
-
+        //Using adapter to place cards linked accounts, card numbers and cvc to correct places
         Card card = getItem(position);
         String Cvc = card.getCvc();
         String CardNumber = card.getAccountNo();

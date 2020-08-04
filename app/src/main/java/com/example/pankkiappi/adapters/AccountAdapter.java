@@ -43,7 +43,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
             convertView = inflater.inflate(resource, parent, false);
 
         }
-
+        //Using adapter to set account names, numbers and balances to correct places
         Account account = getItem(position);
 
         TextView txtAccountName = convertView.findViewById(R.id.txt_account_name);

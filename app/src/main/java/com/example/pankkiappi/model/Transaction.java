@@ -11,7 +11,7 @@ public class Transaction {
         DEPOSIT
     }
 
-    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd - hh:mm a");
+    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/dd/MM - hh:mm a");
 
     private String transactionID;
     private String timestamp;
@@ -22,6 +22,7 @@ public class Transaction {
     private TRANSACTION_TYPE transactionType;
     private long dbId;
 
+    //Transaction constructor
     public Transaction (String transactionID, String payee, double amount) {
         this.transactionID = transactionID;
         timestamp = DATE_FORMAT.format(new Date());
@@ -29,26 +30,26 @@ public class Transaction {
         this.amount = amount;
         transactionType = TRANSACTION_TYPE.PAYMENT;
     }
-
+    //Transaction constructor
     public Transaction (String transactionID, String timestamp, String payee, double amount, long dbId) {
         this(transactionID, payee, amount);
         this.timestamp = timestamp;
         this.dbId = dbId;
     }
-
+    //Transaction constructor
     public Transaction(String transactionID, double amount) {
         this.transactionID = transactionID;
         timestamp = DATE_FORMAT.format(new Date());
         this.amount = amount;
         transactionType = TRANSACTION_TYPE.DEPOSIT;
     }
-
+    //Transaction constructor
     public Transaction(String transactionID, String timestamp, double amount, long dbId) {
         this(transactionID, amount);
         this.timestamp = timestamp;
         this.dbId = dbId;
     }
-
+    //Transaction constructor
     public Transaction(String transactionID, String sendingAccount, String destinationAccount, double amount) {
         this.transactionID = transactionID;
         this.timestamp = DATE_FORMAT.format(new Date());
@@ -57,7 +58,7 @@ public class Transaction {
         this.amount = amount;
         transactionType = TRANSACTION_TYPE.TRANSFER;
     }
-
+    //Transaction constructor
     public Transaction(String transactionID, String timestamp, String sendingAccount, String destinationAccount, double amount, long dbId) {
         this(transactionID, sendingAccount, destinationAccount, amount);
         this.timestamp = timestamp;

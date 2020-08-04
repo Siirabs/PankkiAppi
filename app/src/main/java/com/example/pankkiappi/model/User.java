@@ -2,6 +2,7 @@ package com.example.pankkiappi.model;
 
 import java.util.ArrayList;
 
+//user constructor
 public class User {
     private int id;
     private String name;
@@ -93,17 +94,19 @@ public class User {
 
 
 
-
+    //Sets user accounts from database
     public void setAccountsFromDB(ArrayList<Account> accounts) {
         this.accounts = accounts;
     }
 
+    //Adds account to user
     public void addAccount(String accountName, double accountBalance, boolean payments) {
         String accNo = "A" + (accounts.size() + 1);
         Account account = new Account(accountName, accNo, accountBalance, payments);
         accounts.add(account);
     }
 
+    //Adds transfer transaction between users accounts
     public void addTransferTransaction(Account sendingAcc, Account receivingAcc, double transferAmount) {
 
         sendingAcc.setAccountBalance(sendingAcc.getAccountBalance() - transferAmount);

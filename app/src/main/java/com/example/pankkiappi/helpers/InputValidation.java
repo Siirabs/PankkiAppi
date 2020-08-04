@@ -22,7 +22,7 @@ public class InputValidation {
         this.context = context;
     }
 
-
+   //Tests if there is text in the editText
     public boolean isInputEditTextFilled(TextInputEditText textInputEditText, TextInputLayout textInputLayout, String message) {
         String value = textInputEditText.getText().toString().trim();
         if (value.isEmpty()) {
@@ -36,12 +36,13 @@ public class InputValidation {
         return true;
     }
 
-
+    //Tests if password is valid
     public boolean isValidPassword(TextInputEditText textInputEditText, TextInputLayout textInputLayout, String message)  {
 
         Pattern pattern;
         Matcher matcher;
         String value = textInputEditText.getText().toString().trim();
+        //Pattern to check password, must be at least 12 char long, have number, lowercase and uppercase letter and special character
         final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=])(?=\\S+$).{12,}$";
 
         pattern = Pattern.compile(PASSWORD_PATTERN);
@@ -56,7 +57,7 @@ public class InputValidation {
         return true;
     }
 
-
+    //Tests if given inputted text is actual email, must have @ in it
     public boolean isInputEditTextEmail(TextInputEditText textInputEditText, TextInputLayout textInputLayout, String message) {
         String value = textInputEditText.getText().toString().trim();
         if (value.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(value).matches()) {
@@ -69,6 +70,7 @@ public class InputValidation {
         return true;
     }
 
+    //Tests if given text matches each other (password, enter password again)
     public boolean isInputEditTextMatches(TextInputEditText textInputEditText1, TextInputEditText textInputEditText2, TextInputLayout textInputLayout, String message) {
         String value1 = textInputEditText1.getText().toString().trim();
         String value2 = textInputEditText2.getText().toString().trim();

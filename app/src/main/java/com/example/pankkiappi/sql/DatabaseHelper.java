@@ -97,7 +97,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // create account table sql query
 
-
     private static final String CREATE_ACCOUNTS_TABLE =
             "CREATE TABLE " + TABLE_ACCOUNT + " (" +
                     COLUMN_USER_ID + " INTEGER NOT NULL, " +
@@ -108,6 +107,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "PRIMARY KEY(" + COLUMN_USER_ID + "," + COLUMN_ACCOUNT_ID + "), " +
                     "FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + "))";
 
+    // create card table sql query
     private static final String CREATE_CARD_TABLE = "CREATE TABLE " + TABLE_CARD + "(" +
             COLUMN_USER_ID + " INTEGER NOT NULL , " +
             COLUMN_LINKED_ACCOUNT+ " TEXT NOT NULL," +
@@ -122,6 +122,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String DROP_CARD_TABLE = "DROP TABLE IF EXISTS " + TABLE_CARD;
     private String DROP_TRANSACTIONS_TABLE = "DROP TABLE IF EXISTS " + TRANSACTIONS_TABLE;
 
+    // create transaction table sql query
     private static final String CREATE_TRANSACTIONS_TABLE =
             "CREATE TABLE " + TRANSACTIONS_TABLE + " (" +
                     COLUMN_USER_ID + " INTEGER NOT NULL, " +
@@ -168,7 +169,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-
+    //Method of adding new user to database
     public void addUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -188,6 +189,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    //Method of adding new account to user to the database
     public void saveNewAccount(User user, Account account, Switch transfer) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -207,6 +209,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    //Method of adding new card to users account to the database
     public void saveNewCard(User user, String account, String cardNumber,  String cvc) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -220,6 +223,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_CARD, null, values);
         db.close();
     }
+
+    //Method for overwriting account, used for example when making a deposit and balance needs to be updated in the database
     public void overwriteAccount(User user, Account account) {
 
         database = this.getWritableDatabase();
@@ -235,7 +240,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.close();
     }
 
-
+    //
     public void saveNewTransaction(User user, String accountNo, Transaction transaction) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -245,15 +250,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(TRANSACTION_ID, transaction.getTransactionID());
         values.put(TIMESTAMP, transaction.getTimestamp());
 
+        //Method of checking if transaction type is transfer or deposit
         if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.TRANSFER) {
             values.put(SENDING_ACCOUNT, transaction.getSendingAccount());
             values.put(DESTINATION_ACCOUNT, transaction.getDestinationAccount());
             values.putNull(TRANSACTION_PAYEE);
-        } else if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.PAYMENT) {
-            values.putNull(SENDING_ACCOUNT);
-            values.putNull(DESTINATION_ACCOUNT);
-            values.put(TRANSACTION_PAYEE, transaction.getPayee());
-        } else if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.DEPOSIT) {
+        }
+         else if (transaction.getTransactionType() == Transaction.TRANSACTION_TYPE.DEPOSIT) {
             values.putNull(SENDING_ACCOUNT);
             values.putNull(DESTINATION_ACCOUNT);
             values.putNull(TRANSACTION_PAYEE);
@@ -328,7 +331,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return userList;
     }
 
-
+    //Method to update user information, used when user changes something in the settings
     public void updateUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -354,7 +357,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-
+    //Method of getting transactions from current account
     public ArrayList<Transaction> getTransactionsFromCurrentAccount(long userID, String accountNo) {
 
         ArrayList<Transaction> transactions = new ArrayList<>();
@@ -370,6 +373,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return transactions;
     }
+    //Cursor which moves trough transactions table to find correct user transactions
     private void getTransactionsFromCursor(long userID, String accountNo, ArrayList<Transaction> transactions, Cursor cursor) {
 
         while (cursor.moveToNext()) {
@@ -398,6 +402,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
     }
+
+    //Method to check if user exists on the database
     public boolean checkUser(String email) {
 
         // array of columns to fetch
@@ -437,6 +443,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    //Method to check if user is admin
     public boolean checkAdmin(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         System.out.println(email);
@@ -454,13 +461,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    //Method to check if user is normal user
     public boolean checkUser(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
         String generatedPassword = null;
 
         //String selectQuery = "SELECT " + COLUMN_USER_SALT + " FROM " + TABLE_USER + " WHERE " + COLUMN_USER_EMAIL + " = "+email;
         Cursor cursor1 = db.rawQuery("SELECT user_salt FROM user WHERE user_email = ?", new String[] {email});
-        //Liikutetaan cursoria ettei kaadu jos yrittää olemattomalla tunnuksella kirjautua
+        //Moving cursor, because it will crash when trying to login with a non existent user
         if( cursor1 != null && cursor1.moveToFirst() ){
             String salt = cursor1.getString(0);
             byte[] bytes = salt.getBytes(StandardCharsets.ISO_8859_1);
@@ -512,6 +520,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    //Method of getting accounts from current profile
     public ArrayList<Account> getAccountsFromCurrentProfile(long user_id) {
 
         ArrayList<Account> accounts = new ArrayList<>();
@@ -527,7 +536,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-
+    //Cursor which goes trough accounts table to find correct accounts to corresponding user
     private void getAccountsFromCursor(long userID, ArrayList<Account> accounts, Cursor cursor) {
 
         while (cursor.moveToNext()) {
@@ -545,6 +554,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    //Method of getting users accounts cards
     public ArrayList<Card> getCardsFromCurrentProfile(long user_id) {
 
         ArrayList<Card> cards = new ArrayList<>();
@@ -560,6 +570,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cards;
     }
 
+    //Cursor which goes trough the cards table to find cards for corresponding user
     private void getCardsFromCursor(long userID, ArrayList<Card> cards, Cursor cursor2) {
 
         while (cursor2.moveToNext()) {

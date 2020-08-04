@@ -7,6 +7,7 @@ public class Card {
     private String accountNo;
     private long dbID;
 
+    //card constructor
     public Card(long dbID, String accountNo, String cardNumber, String cvc) {
         this.dbID = dbID;
         this.accountNo = accountNo;

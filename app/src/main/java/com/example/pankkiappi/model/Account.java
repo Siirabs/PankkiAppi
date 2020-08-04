@@ -13,6 +13,7 @@ public class Account {
     private boolean paymentsAllowed;
     private long dbID;
 
+    //Account constructor
     public Account (String accountName, String accountNo, double accountBalance, boolean paymentsAllowed) {
         this.accountName = accountName;
         this.accountNo = accountNo;
@@ -22,6 +23,7 @@ public class Account {
         this.paymentsAllowed = paymentsAllowed;
     }
 
+    //Account constructor
     public Account (String accountName, String accountNo, double accountBalance, long dbID, boolean paymentsAllowed) {
         this(accountName, accountNo, accountBalance, paymentsAllowed);
         this.dbID = dbID;
@@ -55,10 +57,11 @@ public class Account {
 
     public boolean isPaymentsAllowed() {return paymentsAllowed;}
 
+
     public void addDepositTransaction(double amount) {
         accountBalance += amount;
 
-        //TODO: Could be a better way - ie. each time a deposit is added, add it to the master count (global variable - persisted?)
+
         int depositsCount = 0;
 
         for (int i = 0; i < transactions.size(); i++) {

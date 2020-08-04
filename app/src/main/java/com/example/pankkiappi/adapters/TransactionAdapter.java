@@ -37,7 +37,7 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(resource, parent, false);
         }
-
+        //Using adapter to place transaction information to correct places
         Transaction transaction = getItem(position);
 
         ImageView imgTransactionIcon = convertView.findViewById(R.id.img_transaction);
