@@ -86,7 +86,6 @@ public class AccountsFragment extends Fragment {
     private int selectedAccountIndex;
 
     private void displayAccountDialog() {
-
         accountDialog = new Dialog(getActivity());
         accountDialog.setContentView(R.layout.account_dialog);
 
@@ -153,6 +152,7 @@ public class AccountsFragment extends Fragment {
     }
 
     private void viewAccount() {
+        //Lets you browse transactions by tapping on created account
         TransactionFragment transactionsFragment = new TransactionFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("SelectedAccount", selectedAccountIndex);
@@ -213,6 +213,7 @@ public class AccountsFragment extends Fragment {
                     if (!balance.equals("")) {
                         if (isNum) {
                             if (initDepositAmount >= 0.01) {
+                                //If deposit is >0.01 it will be saved in transactions
                                 user.getAccounts().get(user.getAccounts().size()-1).addDepositTransaction(initDepositAmount);
                                 db.saveNewTransaction(user, user.getAccounts().get(user.getAccounts().size()-1).getAccountNo(), user.getAccounts().get(user.getAccounts().size()-1).getTransactions().get(user.getAccounts().get(user.getAccounts().size()-1).getTransactions().size()-1));
                             }
@@ -243,6 +244,7 @@ public class AccountsFragment extends Fragment {
                     accountDialog.dismiss();
 
                 } else {
+                    //Prevent duplicate account names
                     Toast.makeText(this.getActivity(), "This account already exists", Toast.LENGTH_SHORT).show();
                     edtAccountName.getText().clear();
                 }

@@ -86,7 +86,7 @@ public class CardsFragment extends Fragment {
     private Dialog CardDialog;
 
     private void displayCardDialog() {
-
+        //Displays card creation window
         CardDialog = new Dialog(getActivity());
         CardDialog.setContentView(R.layout.card_dialog);
 
@@ -116,6 +116,7 @@ public class CardsFragment extends Fragment {
             cardList.add(acc.getAccountName());
         }
 
+        //Drop down menu to select account which card is created for
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.spinner_item, cardList);
         adapter.setDropDownViewResource(R.layout.spinner_item);
@@ -165,6 +166,7 @@ public class CardsFragment extends Fragment {
     }
 
     public void addCard() {
+        //Gets the account from spinner
         String account = spinner.getSelectedItem().toString();
         DatabaseHelper db = new DatabaseHelper(getActivity().getApplicationContext());
 
